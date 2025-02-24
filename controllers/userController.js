@@ -1,9 +1,9 @@
 const userModel = require('../models/userModel')
-const momgoose = require('mongoose')
+const mongoose = require('mongoose')
 const loginController = async (req, res) => {
     try {
         const { email, password } = req.body
-        const user = await userModel.finOne({
+        const user = await userModel.findOne({
             email, password
         })
         if (!user) {
@@ -24,9 +24,9 @@ const loginController = async (req, res) => {
 
 const registerController = async (req, res) => {
     try {
-        const newUser = new userModel.create(req.body);
+        const newUser = new userModel(req.body);
         await newUser.save();
-        res.staus(201).json({
+        res.status(201).json({
             success: true,
             newUser
         });

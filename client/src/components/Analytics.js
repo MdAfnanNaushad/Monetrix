@@ -1,6 +1,5 @@
 import React from 'react'
 import { Progress } from 'antd'
-import { all } from 'axios'
 
 const Analytics = ({ allTransaction }) => {
 
@@ -99,7 +98,7 @@ const Analytics = ({ allTransaction }) => {
                             return (
                                 amount > 0 && (
                                     <div className='card'>
-                                        <div className='card-body'>
+                                        <div className='card-body' key={category}>
                                             <h5>{category}</h5>
                                             <Progress
                                                 percent={((amount / totalExpenseTurnover) * 100).toFixed(0)} />

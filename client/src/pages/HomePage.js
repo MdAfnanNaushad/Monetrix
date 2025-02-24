@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../components/layouts/Layout'
 import moment from 'moment'
-import { Modal, Form, Input, Select, message, Table, DatePicker,  } from 'antd'
+import { Modal, Form, Input, Select, message, Table, DatePicker, } from 'antd'
 import { EditOutlined, DeleteOutlined, UnorderedListOutlined, AreaChartOutlined } from '@ant-design/icons'
 
 import axios from 'axios'
@@ -11,9 +11,9 @@ const { RangePicker } = DatePicker;
 
 
 const HomePage = () => {
-  const [setshowModal, setSetshowModal] = useState(false)
+  const [showModal, setshowModal] = useState(false)
   const [loading, setloading] = useState(false)
-  const [allTransaction] = useState([])
+  const [allTransaction, setAllTransaction] = useState([]);
   const [frequency, setfrequency] = useState('7')
   const [selectedDate, setselectedDate] = useState([])
   const [type, settype] = useState('all')
@@ -22,7 +22,7 @@ const HomePage = () => {
   //table data
   const columns = [
     {
-      title: Date,
+      title: 'Date',
       dataIndex: 'date',
       render: (text) => <sapn>{moment(text).format('YYYY-MM-DD')}</sapn>
     },
@@ -48,7 +48,7 @@ const HomePage = () => {
         <div>
           <EditOutlined className='mx-2' onClick={() => {
             setEdittable(record)
-            setSetshowModal(true)
+            setshowModal(true)
           }} />
           <DeleteOutlined className='mx-2' onClick={() => { handleDelete(record) }} />
         </div>
@@ -68,6 +68,7 @@ const HomePage = () => {
           type
 
         })
+        setAllTransaction(res.data)
         console.log(res)
         setloading(false)
       } catch (error) {
@@ -100,17 +101,19 @@ const HomePage = () => {
       const user = JSON.parse(localStorage.getItem('user'))
       setloading(true)
       if (edittable) {
-        await axios.post('/transaction/add-transaction', {
-          payload: {
-            ...values,
-            userId: user._id
-          },
+        await axios.post('/transaction/edit-transaction', { // Update API endpoint
+          ...values,
+          userId: user._id,
           transactionId: edittable._id,
-        })
-        setloading(false)
-        message.success('Transaction added successfully')
+        });
+      } else {
+        await axios.post('/transaction/add-transaction', {
+          ...values,
+          userId: user._id,
+        });
       }
-      setSetshowModal(false)
+      message.success('Transaction added successfully')
+      setshowModal(false)
       setEdittable(null)
     } catch (error) {
       setloading(false)
@@ -130,11 +133,11 @@ const HomePage = () => {
             <Select.Option value='custom'>Custom</Select.Option>
           </Select>
           {frequency === 'custom' && (
-            <RangePicker value={setselectedDate} onChange={(values) => setselectedDate(values)} />
+            <RangePicker value={selectedDate} onChange={(values) => setselectedDate(values)} />
           )}
         </div>
         <div>
-          <h6>Select Typr</h6>
+          <h6>Select Type</h6>
           <Select value={type} onChange={(values) => settype(values)}>
             <Select.Option value='all'>All</Select.Option>
             <Select.Option value='Income'>Income</Select.Option>
@@ -149,36 +152,40 @@ const HomePage = () => {
           <AreaChartOutlined className={`mx-2 ${viewData === 'analytics' ? 'active-icon' : 'inactive-icon'}`} onClick={() => setViewData('analytics')} />
         </div>
         <div>
-          <button className='btn btn-primary' onClick={() => setSetshowModal(true)}>Add New</button>
+          <button className='btn btn-primary' onClick={() => setshowModal(true)}>Add New</button>
         </div>
       </div>
       <div className='content'>
         {viewData === 'table' ? <Table columns={columns} dataSource={allTransaction} /> : <Analytics allTransaction={allTransaction} />}
 
       </div>
-      <Modal {...edittable ? 'Edit Transaction' : 'Add Tranaaction'}
-        open={setshowModal}
-        onCancel={() => setSetshowModal(false)}
+      <Modal title={edittable ? 'Edit Transaction' : 'Add Transaction'}
+        open={showModal}
+        onCancel={() => setshowModal(false)}
         footer={false}
       >
-        <Form layout='vertical' opnFinish={handleSubmit} initialValues={edittable}>
+        <Form layout='vertical' onFinish={handleSubmit} initialValues={edittable}>
           <Form.Item label='Amount' name='amount' >
             <Input type='text' />
           </Form.Item>
           <Form.Item label='type' name='type' >
-            <Select.Option value='income'>Income</Select.Option>
-            <Select.Option value='expense'>Expense</Select.Option>
+            <Select>
+              <Select.Option value='income'>Income</Select.Option>
+              <Select.Option value='expense'>Expense</Select.Option>
+            </Select>
           </Form.Item>
           <Form.Item label='Category' name='category' >
-            <Select.Option value='salary'>Salary</Select.Option>
-            <Select.Option value='tip'>Tip</Select.Option>
-            <Select.Option value='project'>Project</Select.Option>
-            <Select.Option value='food'>food</Select.Option>
-            <Select.Option value='movie'>Movie</Select.Option>
-            <Select.Option value='bills'>bills</Select.Option>
-            <Select.Option value='medical'>Medical</Select.Option>
-            <Select.Option value='fee'>Fee</Select.Option>
-            <Select.Option value='tax'>Tax</Select.Option>
+            <Select>
+              <Select.Option value='salary'>Salary</Select.Option>
+              <Select.Option value='tip'>Tip</Select.Option>
+              <Select.Option value='project'>Project</Select.Option>
+              <Select.Option value='food'>food</Select.Option>
+              <Select.Option value='movie'>Movie</Select.Option>
+              <Select.Option value='bills'>bills</Select.Option>
+              <Select.Option value='medical'>Medical</Select.Option>
+              <Select.Option value='fee'>Fee</Select.Option>
+              <Select.Option value='tax'>Tax</Select.Option>
+            </Select>
           </Form.Item>
           <Form.Item label='Date' name='date' >
             <Input type='date' />

@@ -1,45 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { message } from 'antd';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 const Header = () => {
-  const [loginUser, setloginUser] = useState('');
+  const [loginUser, setLoginUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      setloginUser(user);
+      setLoginUser(user);
     }
   }, []);
 
   const logoutHandler = () => {
-    localStorage.removeItem('user');
-    message.success('Logout Successful');
-    navigate('/login');
+    localStorage.removeItem("user");
+    message.success("Logout Successful");
+    navigate("/login");
   };
 
   return (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-center text-center align-items-center">
-        <div className="container-fluid">
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon" />
-          </button>
-          <div className="collapse navbar-collapse" id="navbarToggleDemo01">
-            <Link className="navbar-brand" to='/'>Monetrix</Link>
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container"> {/* Changed from container-fluid */}
+        <Link className="navbar-brand" to="/">Monetrix</Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarToggleDemo01"  // Fixed the mismatch
+          aria-controls="navbarToggleDemo01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon" />
+        </button>
+        <div className="collapse navbar-collapse" id="navbarToggleDemo01">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+            {loginUser ? (
+              <>
+                <li className="nav-item">
+                  <p className="nav-link active" aria-current="page">
+                    {loginUser?.name}  {/* Fixed potential null issue */}
+                  </p>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-primary" onClick={logoutHandler}>
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
               <li className="nav-item">
-                <p className="nav-link active" aria-current="page">{loginUser && loginUser.name}</p>{" "}
+                <Link className="btn btn-success" to="/login">
+                  Login
+                </Link>
               </li>
-              <li className="nav-item">
-                <button className="btn btn-primary" onClick={logoutHandler}>Logout</button>
-              </li>
-            </ul>
-          </div>
+            )}
+          </ul>
         </div>
-      </nav>
-    </>
+      </div>
+    </nav>
   );
 };
 
