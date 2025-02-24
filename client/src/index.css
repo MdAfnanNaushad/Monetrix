@@ -1,0 +1,41 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.content{
+  height: 80vh;
+}
+.register-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.filters{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  padding: 15px 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 5px;
+}
+.anticons svg{
+  font-size: 20px;
+  color: #1890ff;
+  cursor: pointer;
+}
+.active-icons{
+  color: #f5222d;
+}
+.inactive-icons{
+  color: #1890ff;
+}
+.switc-icons{
+  border:1px solid #1890ff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
