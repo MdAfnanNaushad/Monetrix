@@ -1,9 +1,10 @@
 const express = require('express');
 const { 
     addTransaction, 
-    getAllTransactions,
+    fetchTransactions,
     editTransaction,
-    deleteTransaction
+    deleteTransaction,
+   
  } = require('../controllers/transactionCTRL');
 
 //router object
@@ -20,6 +21,9 @@ router.post('/edit-transaction', editTransaction);
 router.post('/delete-transaction', deleteTransaction);
 
 //get transaction
-router.post('/get-transactions', getAllTransactions);
+router.post('/get-transactions', fetchTransactions);
+
+//view Transaction
+// router.post('/view-transaction')
 
 module.exports = router; // Because of ES6 module system

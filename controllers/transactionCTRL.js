@@ -1,82 +1,95 @@
-const transactionModel = require('../models/transactionModel');
-const moment = require('moment');
+const transactionModel = require("../models/transactionModel");
+const moment = require("moment");
+const mongoose = require("mongoose");
 
 // Get all transactions
-const getAllTransactions = async (req, res) => {
-    try {
-        const { frequency, selectedDate, type, userid } = req.body;
-        let filter = { userid };
+const fetchTransactions = async (req, res) => {
+  const { frequency, selectedDate, type, userid } = req.body;
 
-        if (frequency !== 'custom') {
-            filter.date = { $gte: moment().subtract(Number(frequency), 'days').toDate() };
-        } else {
-            filter.date = {
-                $gte: moment(selectedDate[0]).startOf('day').toDate(),
-                $lte: moment(selectedDate[1]).endOf('day').toDate(),
-            };
-        }
+  if (!userid) {
+    return res.status(400).json({ message: "User ID is required" });
+  }
 
-        if (type !== 'all') filter.type = type;
+  try {
+    let filter = { userid };
 
-        const transactions = await transactionModel.find(filter);
-        res.status(200).json(transactions);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json(error);
+    if (frequency !== "custom") {
+      filter.date = {
+        $gt: moment().subtract(Number(frequency), "days").toDate(),
+      };
+    } else if (selectedDate && selectedDate.length === 2) {
+      filter.date = {
+        $gte: new Date(selectedDate[0]),
+        $lte: new Date(selectedDate[1]),
+      };
     }
-};
 
-// Add a transaction
-const addTransaction = async (req, res) => {
-    try {
-        const newTransaction = new transactionModel(req.body);
-        await newTransaction.save();
-        res.status(201).json({ message: "Transaction Added Successfully" });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json(error);
+    if (type !== "all") {
+      filter.type = type;
     }
+
+    const transactions = await transactionModel.find(filter);
+    res.status(200).json(transactions);
+  } catch (error) {
+    console.error("Fetch Transactions Error:", error);
+    res.status(500).json({ message: "Server Error", error });
+  }
 };
 
 // Edit a transaction
 const editTransaction = async (req, res) => {
-    try {
-        const updatedTransaction = await transactionModel.findByIdAndUpdate(
-            req.body._id,
-            req.body,
-            { new: true }
-        );
+  try {
+    await transactionModel.findOneAndUpdate(
+      { _id: req.body.transactionId },
+      req.body.payload
+    );
+    res.status(200).send("Edit Successfully");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error", error });
+  }
+};
 
-        if (!updatedTransaction) {
-            return res.status(404).json({ message: "Transaction not found" });
-        }
-
-        res.status(200).json({ message: "Transaction Updated Successfully" });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json(error);
-    }
+// Add a transaction
+const addTransaction = async (req, res) => {
+  try {
+    const newTransaction = new transactionModel(req.body);
+    await newTransaction.save();
+    res.status(201).send("Transaction Created");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error", error });
+  }
 };
 
 // Delete a transaction
 const deleteTransaction = async (req, res) => {
-    try {
-        const transaction = await transactionModel.findOne({ _id: req.body.transactionId, userid: req.body.userid });
-        if (!transaction) {
-            return res.status(404).json({ message: "Transaction not found or unauthorized" });
-        }
-
-        await transactionModel.findByIdAndDelete(req.body.transactionId);
-        res.status(200).json({ message: "Transaction Deleted Successfully" });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json(error);
-    }
+  try {
+    await transactionModel.findOneAndDelete({ _id: req.body.transactionId });
+    res.status(200).send("Transaction Deleted!");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error", error });
+  }
 };
 
+// const viewTransaction = async (req, res) => {
+//   try {
+//     const transaction = await transactionModel.findOne(
+//       { _id: req.body.transactionId },
+//       req.body.payload
+//     );
+//     res.status(200).json(transaction);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "Server Error", error });
+//   }
+// };
+
 module.exports = {
-    getAllTransactions,
-    addTransaction,
-    editTransaction,
-    deleteTransaction
+  fetchTransactions,
+  addTransaction,
+  editTransaction,
+  deleteTransaction
+  // viewTransaction,
 };

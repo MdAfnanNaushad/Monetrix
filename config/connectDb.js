@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const colors = require('colors');
 require('dotenv').config();
+
 const connectDb = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URL, {
@@ -9,8 +10,8 @@ const connectDb = async () => {
         });
         console.log("Server Connected".green)
     } catch (error) {
-        console.log(error)
-        console.log("Connection Failed to Server".red)
+        console.error("Connection Failed to Server".red, error);
     }
-}
+};
+
 module.exports = connectDb;

@@ -1,29 +1,32 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const path = require('path');
-const app = express();
 const dotenv = require('dotenv');
-const colors = require('colors');
 const connectDb = require('./config/connectDb');
+
 dotenv.config();
 
-//middleware
+const app = express();
+
+// Middleware
 app.use(morgan('dev'));
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+app.use(express.json({ limit: '5mb' })); // Reduce payload limit
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
 app.use(cors({
-  origin: ["http://localhost:3001"], // Add frontend URL here
+  origin: 'http://localhost:3000', // Ensure frontend is correctly connected
   credentials: true
 }));
-connectDb();
-//userRoutes
-app.use('/api/v1/users',require('./routes/userRoute'))
 
+// Connect to DB
+connectDb();
+
+// Routes
+app.use('/api/v1/users', require('./routes/userRoute'));
 app.use('/api/v1/transactions', require('./routes/transactionRoute'));
 
-
-app.listen(3003, () => {
-  console.log('listening on port 3003');
+// Start server
+const PORT = process.env.PORT || 3003;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

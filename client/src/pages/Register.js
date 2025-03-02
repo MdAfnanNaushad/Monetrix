@@ -13,18 +13,28 @@ const Register = () => {
     try {
       setLoading(true);
       console.log("Sending Payload:", values); // Debugging
-      await axios.post(
-        "http://localhost:3003/api/v1/users/register",  
-        values,
-        { headers: { "Content-Type": "application/json" } } 
+
+      const res = await axios.post(
+        "http://localhost:3003/api/v1/users/register",
+        {
+          name: values.name.trim(),
+          email: values.email.trim().toLowerCase(),
+          password: values.password,
+        },
+        { headers: { "Content-Type": "application/json" } }
       );
-      message.success("Registration Successful");
-      setLoading(false);
-      navigate("/login");
+
+      if (res.status === 201) {
+        message.success("Registration Successful");
+        navigate("/login");
+      } else {
+        throw new Error(res.data.message || "Registration failed");
+      }
     } catch (error) {
-      setLoading(false);
-      message.error(error.response?.data?.message || "Something went wrong");
       console.error("Registration Error:", error);
+      message.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,14 +61,20 @@ const Register = () => {
           <Form.Item 
             label="Email" 
             name="email"
-            rules={[{ required: true, type: "email", message: "Please enter a valid email" }]}
+            rules={[
+              { required: true, message: "Please enter your email" },
+              { type: "email", message: "Please enter a valid email" }
+            ]}
           >
             <Input />
           </Form.Item>
           <Form.Item 
             label="Password" 
             name="password"
-            rules={[{ required: true, message: "Please enter your password" }]}
+            rules={[
+              { required: true, message: "Please enter your password" },
+              { min: 6, message: "Password must be at least 6 characters" }
+            ]}
           >
             <Input type="password" />
           </Form.Item>

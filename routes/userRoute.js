@@ -1,13 +1,11 @@
 const express = require('express');
-const { loginController, registerController } = require('../controllers/userController');
+const { registerUser, loginUser } = require('../controllers/userController');
 
+// Create a router object
 const router = express.Router();
 
-//login User
-router.post('/login' , loginController)
+// Define routes
+router.post('/register', registerUser);
+router.post('/login', loginUser);
 
-
-//register User
-router.post('/register', registerController)
-
-module.exports = router //bcz of ES6 module system
+module.exports = router;
