@@ -5,72 +5,53 @@ import axios from "axios";
 import Spinner from "../components/Spinner";
 
 const Login = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  // Submit Handler
   const submitHandler = async (values) => {
     try {
       setLoading(true);
+      const res = await axios.post("http://localhost:3003/api/v1/users/login", values, {
+        headers: { "Content-Type": "application/json" },
+      });
 
-      // API Call
-      const { data } = await axios.post(
-        "http://localhost:3003/api/v1/users/login",
-        values,
-        { headers: { "Content-Type": "application/json" } }
-      );
+      if (res.data?.token) {
+        message.success("Login Successful");
+        localStorage.setItem("token", res.data.token);
 
-      setLoading(false);
-      message.success("Login Successful");
-
-      // Store only essential user data
-      const { _id, name, email } = data.user;
-      localStorage.setItem("user", JSON.stringify({ _id, name, email }));
-
-      navigate("/");
-    } catch (error) {
-      setLoading(false);
-
-      // Show backend error message if available
-      if (error.response && error.response.data) {
-        message.error(error.response.data.message || "Invalid Credentials");
+        // ✅ Fix: Use navigate with replace to prevent repeated calls
+        navigate("/");
       } else {
-        message.error("Something went wrong. Please try again.");
+        throw new Error("Login failed. No token received.");
       }
+    } catch (error) {
+      message.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Redirect if user is already logged in
   useEffect(() => {
-    if (localStorage.getItem("user")) {
-      navigate("/");
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/"); // ✅ Fix: Prevent multiple navigations
     }
   }, [navigate]);
 
   return (
-    <div className="register-page">
+    <div className="login-page">
       {loading && <Spinner />}
       <Form layout="vertical" onFinish={submitHandler}>
-        <h1>Login Form</h1>
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[{ required: true, message: "Please enter your email!" }]}
-        >
-          <Input type="email" />
+        <h1>Login</h1>
+        <Form.Item label="Email" name="email" rules={[{ required: true, message: "Please enter your email" }]}> 
+          <Input />
         </Form.Item>
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: "Please enter your password!" }]}
-        >
+        <Form.Item label="Password" name="password" rules={[{ required: true, message: "Please enter your password" }]}> 
           <Input type="password" />
         </Form.Item>
-        <Link to="/register">Not a user? Click here to Register</Link>
         <div className="d-flex justify-content-between">
-          <button className="btn btn-primary" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
+          <Link to="/register">New User? Register Here</Link>
+          <button type="submit" className="btn btn-primary">Login</button>
         </div>
       </Form>
     </div>

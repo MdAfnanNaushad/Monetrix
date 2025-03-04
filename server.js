@@ -14,7 +14,7 @@ app.use(express.json({ limit: '5mb' })); // Reduce payload limit
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
 app.use(cors({
-  origin: 'http://localhost:3000', // Ensure frontend is correctly connected
+  origin: 'http://localhost:3001', // Ensure frontend is correctly connected
   credentials: true
 }));
 

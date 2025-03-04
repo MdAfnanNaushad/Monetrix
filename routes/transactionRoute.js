@@ -6,22 +6,23 @@ const {
     deleteTransaction,
    
  } = require('../controllers/transactionCTRL');
+ const authMiddleware = require('../middlewares/authMiddleware')
 
 //router object
 const router = express.Router();
 
 
 //add transaction
-router.post('/add-transaction', addTransaction);
+router.post('/add-transaction',authMiddleware, addTransaction);
 
 //add transaction
-router.post('/edit-transaction', editTransaction);
+router.post('/edit-transaction',authMiddleware, editTransaction);
 
 //delete Tranaction
-router.post('/delete-transaction', deleteTransaction);
+router.post('/delete-transaction',authMiddleware, deleteTransaction);
 
 //get transaction
-router.post('/get-transactions', fetchTransactions);
+router.post('/get-transactions',authMiddleware, fetchTransactions);
 
 //view Transaction
 // router.post('/view-transaction')

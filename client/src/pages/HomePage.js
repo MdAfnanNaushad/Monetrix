@@ -1,15 +1,19 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import Layout from '../components/layouts/Layout';
 import moment from 'moment';
 import { Modal, Form, Input, Select, message, Table, DatePicker } from 'antd';
 import { EditOutlined, DeleteOutlined, UnorderedListOutlined, AreaChartOutlined, EyeOutlined } from '@ant-design/icons';
 import Spinner from '../components/Spinner';
 import Analytics from '../components/Analytics';
+import { debounce } from '../utils/debounce'; // Import debounce function
 
 const { RangePicker } = DatePicker;
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const debouncedNavigate = debounce(navigate, 300); // Wrap navigate with debounce
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allTransaction, setAllTransaction] = useState([]);
@@ -19,40 +23,68 @@ const HomePage = () => {
   const [viewData, setViewData] = useState('table');
   const [editable, setEditable] = useState(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log("Token :", token);
+    if (!token) {
+      debouncedNavigate("/login"); // Use debounced navigate
+    }
+  }, [debouncedNavigate]);
+
   // Fetch transactions
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem('user'));
+        const token = localStorage.getItem("token");
+        if (!token) {
+          message.error("You are not logged in. Please log in again.");
+          return;
+        }
+
         setLoading(true);
-        const res = await axios.post('/api/v1/transactions/get-transactions', {
-          userid: user._id,
-          frequency,
-          selectedDate,
-          type,
-        });
+        const res = await axios.post(
+          "http://localhost:3003/api/v1/transactions/get-transactions",
+          { frequency, selectedDate, type }, // ✅ Removed userid
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // ✅ Send token instead
+            },
+          }
+        );
+
         setAllTransaction(res.data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        message.error('Failed to fetch transactions');
+        console.error("Fetch Transactions Error:", error);
+
+        if (error.response?.status === 401) {
+          message.error("Session expired. Please log in again.");
+          localStorage.removeItem("token");
+          debouncedNavigate("/login"); // Use debounced navigate
+        } else {
+          message.error("Failed to fetch transactions.");
+        }
       }
     };
+
     fetchTransactions();
-  }, [frequency, selectedDate, type]);
+  }, [frequency, selectedDate, type, debouncedNavigate]);
 
   // Delete transaction
   const handleDelete = async (record) => {
     try {
       setLoading(true);
-      await axios.post('/api/v1/transactions/delete-transaction', {
+      await axios.post('http://localhost:3003/api/v1/transactions/delete-transaction', {
         transactionId: record._id,
+      }, {
+        headers: { 'Content-Type': 'application/json' }
       });
       message.success('Transaction deleted successfully');
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.error('Delete Transaction Error:', error);
       message.error('Failed to delete transaction');
     }
   };
@@ -60,31 +92,38 @@ const HomePage = () => {
   // Add/Edit transaction
   const handleSubmit = async (values) => {
     try {
-      const user = JSON.parse(localStorage.getItem('user'));
-      setLoading(true);
-      if (editable) {
-        await axios.post('/api/v1/transactions/edit-transaction', {
-          payload: {
-            ...values,
-            userid: user._id,
-          },
-          transactionId: editable._id,
-        });
-        message.success('Transaction updated successfully');
-      } else {
-        await axios.post('/api/v1/transactions/add-transaction', {
-          ...values,
-          userid: user._id,
-        });
-        message.success('Transaction added successfully');
+      const token = localStorage.getItem("token");
+      if (!token) {
+        message.error("You are not logged in. Please log in again.");
+        return;
       }
+
+      setLoading(true);
+      const endpoint = editable
+        ? "/api/v1/transactions/edit-transaction"
+        : "/api/v1/transactions/add-transaction";
+
+      await axios.post(`http://localhost:3003${endpoint}`, values, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      message.success(editable ? "Transaction updated successfully" : "Transaction added successfully");
       setShowModal(false);
       setEditable(null);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.error('Transaction Processing Error:', error);
-      message.error('Failed to process transaction');
+      console.error("Transaction Processing Error:", error);
+      if (error.response?.status === 401) {
+        message.error("Session expired. Please log in again.");
+        localStorage.removeItem("token");
+        debouncedNavigate("/login"); // Use debounced navigate
+      } else {
+        message.error("Failed to process transaction.");
+      }
     }
   };
 

@@ -4,28 +4,17 @@ const mongoose = require("mongoose");
 
 // Get all transactions
 const fetchTransactions = async (req, res) => {
-  const { frequency, selectedDate, type, userid } = req.body;
-
-  if (!userid) {
-    return res.status(400).json({ message: "User ID is required" });
-  }
-
   try {
-    let filter = { userid };
+    let filter = { userid: req.userId };
 
-    if (frequency !== "custom") {
-      filter.date = {
-        $gt: moment().subtract(Number(frequency), "days").toDate(),
-      };
-    } else if (selectedDate && selectedDate.length === 2) {
-      filter.date = {
-        $gte: new Date(selectedDate[0]),
-        $lte: new Date(selectedDate[1]),
-      };
+    if (req.body.frequency !== "custom") {
+      filter.date = { $gt: moment().subtract(Number(req.body.frequency), "days").toDate() };
+    } else if (req.body.selectedDate?.length === 2) {
+      filter.date = { $gte: new Date(req.body.selectedDate[0]), $lte: new Date(req.body.selectedDate[1]) };
     }
 
-    if (type !== "all") {
-      filter.type = type;
+    if (req.body.type !== "all") {
+      filter.type = req.body.type;
     }
 
     const transactions = await transactionModel.find(filter);
@@ -39,13 +28,17 @@ const fetchTransactions = async (req, res) => {
 // Edit a transaction
 const editTransaction = async (req, res) => {
   try {
+    if (!req.body.transactionId || !req.body.payload) {
+      return res.status(400).json({ message: "Transaction ID and payload are required" });
+    }
+
     await transactionModel.findOneAndUpdate(
       { _id: req.body.transactionId },
       req.body.payload
     );
-    res.status(200).send("Edit Successfully");
+    res.status(200).json({ message: "Edit Successful" });
   } catch (error) {
-    console.log(error);
+    console.log("Edit Transaction Error:", error);
     res.status(500).json({ message: "Server Error", error });
   }
 };
@@ -53,43 +46,35 @@ const editTransaction = async (req, res) => {
 // Add a transaction
 const addTransaction = async (req, res) => {
   try {
-    const newTransaction = new transactionModel(req.body);
+    const newTransaction = new transactionModel({ ...req.body, userid: req.userId });
     await newTransaction.save();
-    res.status(201).send("Transaction Created");
+    res.status(201).json({ message: "Transaction Created" });
   } catch (error) {
-    console.log(error);
+    console.error("Add Transaction Error:", error);
     res.status(500).json({ message: "Server Error", error });
   }
 };
+
+module.exports = { fetchTransactions, addTransaction };
 
 // Delete a transaction
 const deleteTransaction = async (req, res) => {
   try {
+    if (!req.body.transactionId) {
+      return res.status(400).json({ message: "Transaction ID is required" });
+    }
+
     await transactionModel.findOneAndDelete({ _id: req.body.transactionId });
-    res.status(200).send("Transaction Deleted!");
+    res.status(200).json({ message: "Transaction Deleted" });
   } catch (error) {
-    console.log(error);
+    console.log("Delete Transaction Error:", error);
     res.status(500).json({ message: "Server Error", error });
   }
 };
-
-// const viewTransaction = async (req, res) => {
-//   try {
-//     const transaction = await transactionModel.findOne(
-//       { _id: req.body.transactionId },
-//       req.body.payload
-//     );
-//     res.status(200).json(transaction);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Server Error", error });
-//   }
-// };
 
 module.exports = {
   fetchTransactions,
   addTransaction,
   editTransaction,
-  deleteTransaction
-  // viewTransaction,
+  deleteTransaction,
 };
