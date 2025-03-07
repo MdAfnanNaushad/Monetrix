@@ -3,6 +3,7 @@ import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/Spinner";
+import { Header } from "antd/es/layout/layout";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,12 +16,13 @@ const Login = () => {
         headers: { "Content-Type": "application/json" },
       });
 
-      if (res.data?.token) {
+      if (res.status===200) {
         message.success("Login Successful");
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
 
         // ✅ Fix: Use navigate with replace to prevent repeated calls
-        navigate("/");
+        navigate("/",{replace:true});
       } else {
         throw new Error("Login failed. No token received.");
       }
@@ -33,14 +35,15 @@ const Login = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/"); // ✅ Fix: Prevent multiple navigations
+    if (!token) {
+      navigate("/login"); // ✅ Fix: Prevent multiple navigations
     }
-  }, [navigate]);
+  }, []);
 
   return (
     <div className="login-page">
       {loading && <Spinner />}
+      <Header/>
       <Form layout="vertical" onFinish={submitHandler}>
         <h1>Login</h1>
         <Form.Item label="Email" name="email" rules={[{ required: true, message: "Please enter your email" }]}> 

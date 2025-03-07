@@ -14,12 +14,12 @@ function App() {
     </>
   );
 }
-export function ProtectedRoutes(props) {
-  if (localStorage.getItem('user')) {
-    return props.children
-  } else {
-    return <Navigate to='/login' />;
+export function ProtectedRoutes({ children }) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return <Navigate to="/login" replace />; // ✅ `replace` prevents history stack issues
   }
+  return children;
 }
-export default App;
 
+export default App;

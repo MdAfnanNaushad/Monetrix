@@ -14,8 +14,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px;
-  box-shadow: 0 0 3px gray;
+  box-shadow: 0 0 3px rgb(32, 59, 147);
   margin-bottom: 10px;
+  background-color: transparent;
+  color: rgb(255, 255, 255);
 }
 /* transection page */
 
@@ -38,7 +40,220 @@
 .inactive-icon {
   color: gray;
 }
+.footer {
+  position: relative;
+  top: 17rem;
+  background-color: transparent;
+}
+.navbar-brand {
+  position: relative;
+  right: 8%;
+  font-size: xx-large;
+  font-weight: bolder;
+  font-family: serif;
+  z-index: 1000;
+  color: #e6f7ff;
+}
+.logbtn {
+  position: relative;
+  left: 6.5rem;
+}
+#root{
+  height: 100%;
+  background: url('/public/Monetrixbg1.png');
+  background-size: cover;
+}
 
-.filter-tab .ant-select-selector {
-  width: 150px !important;
+/* Change the color of the Select options */
+.ant-select-selector {
+  background-color: #185495 ; /* Background color of the select box */
+  color: #f9f1f1 ; /* Text color */
+  border: 1px solid #ccc ; /* Border color */
+}
+
+/* Change the color of the Select options */
+ .ant-select-item-option {
+  background-color: #fff ; /* Background color of the options */
+  color: #333 ; /* Text color */
+}
+ .ant-select-item-option:hover {
+  background-color: #e6f7ff !important; /* Background color on hover */
+  color: #1890ff !important; /* Text color on hover */
+}
+
+/* Change the color of the selected option */
+ .ant-select-item-option-selected {
+  background-color: #003f61 !important; /* Background color of the selected option */
+  color: #1890ff !important; /* Text color of the selected option */
+}
+
+/* Additional styles for the dropdown */
+.ant-select-dropdown {
+  background-color: rgb(13, 102, 198) !important; /* Background color of the dropdown */
+  color: white !important; /* Text color of the dropdown */
+  border: none !important; /* Remove border */
+  padding: 0 !important; /* Remove padding */
+}
+
+.ant-select-dropdown-menu {
+  background-color: rgb(13, 102, 198) ; /* Background color of the dropdown menu */
+  color: white ; /* Text color of the dropdown menu */
+  border: none ; /* Remove border */
+  padding: 0 ; /* Remove padding */
+}
+
+.ant-select-dropdown-menu-item {
+  background-color: rgb(13, 102, 198) ; /* Background color of the dropdown items */
+  color: white ; /* Text color of the dropdown items */
+  padding: 8px 16px ; /* Adjust padding */
+}
+
+.ant-select-dropdown-menu-item:hover {
+  background-color: #e6f7ff ; /* Background color on hover */
+  color: #1890ff ; /* Text color on hover */
+}
+
+ .ant-select-dropdown-menu-item-selected {
+  background-color: #003f61 ; /* Background color of the selected item */
+  color: #1890ff ; /* Text color of the selected item */
+}
+.ant-table-row{
+  background: rgb(49, 108, 203);
+  font-family: serif;
+  font-weight: bold;
+  color: white;
+}
+.ant-table-row:hover{
+  background: #185495;
+ color: black;
+ font-weight: bolder;
+}
+.ant-table{
+  background: #53a4cf;
+  color: black;
+}
+.login-page {
+  background: url('/public/Monetrixbg1.png');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  
+}
+
+.login-page .ant-form {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.login-page h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1890ff; /* Primary color for the heading */
+}
+
+.login-page .ant-form-item-label > label {
+  color: #333; /* Text color for form labels */
+}
+
+.login-page .ant-input {
+  height: 40px;
+  border-radius: 4px;
+}
+
+.login-page .btn-primary {
+  width: 100%;
+  height: 40px;
+  background-color: #1890ff;
+  border-color: #1890ff;
+  color: white;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.login-page .btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.login-page .d-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.login-page .d-flex a {
+  color: #1890ff;
+}
+
+.login-page .d-flex a:hover {
+  text-decoration: underline;
+}
+
+.register-page {
+  background: url('/public/Monetrixbg1.png') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register-page .ant-form {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.register-page h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1890ff; /* Primary color for the heading */
+}
+
+.register-page .ant-form-item-label > label {
+  color: #333; /* Text color for form labels */
+}
+
+.register-page .ant-input {
+  height: 40px;
+  border-radius: 4px;
+}
+
+.register-page .btn-primary {
+  width: 100%;
+  height: 40px;
+  background-color: #1890ff;
+  border-color: #1890ff;
+  color: white;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.register-page .btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.register-page .d-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.register-page .d-flex a {
+  color: #1890ff;
+}
+
+.register-page .d-flex a:hover {
+  text-decoration: underline;
 }
