@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import Layout from '../components/layouts/Layout';
 import moment from 'moment';
-import { Modal, Form, Input, Select, message, Table, DatePicker } from 'antd';
+import {Card, Modal, Form, Input, Select, message, Table, DatePicker } from 'antd';
 import { EditOutlined, DeleteOutlined, UnorderedListOutlined, AreaChartOutlined, EyeOutlined } from '@ant-design/icons';
 import Spinner from '../components/Spinner';
 import Analytics from '../components/Analytics';
@@ -23,7 +23,9 @@ const HomePage = () => {
   const [selectedDate, setSelectedDate] = useState([]);
   const [type, setType] = useState('all');
   const [viewData, setViewData] = useState('table');
+  const [viewTransaction, setViewTransaction] = useState(null); // State for transaction details
   const [editable, setEditable] = useState(null);
+  const [showViewModal, setshowViewModal] = useState(false)
   const hasFetched = useRef(false); // Prevents multiple API calls
 
   const fetchTransactions = async () => {
@@ -33,15 +35,18 @@ const HomePage = () => {
         navigate("/login");
         return;
       }
+      const payload = {
+        frequency,
+        selectedDate: frequency === 'custom' ? selectedDate : [],
+        type,
+      };
 
       const res = await axios.post(
-        "http://localhost:3003/api/v1/transactions/get-transactions",
-        {},
+        "http://localhost:3003/api/v1/transactions/get-transactions",payload,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Full API Response:", res.data); // ✅ Debug API response
       if (res.status === 200) {
         setAllTransaction(res.data);
         console.log("Transactions fetched:", res.data);
@@ -59,12 +64,16 @@ const HomePage = () => {
     fetchTransactions();
   }, []);
 
+  useEffect(() => {
+    fetchTransactions();
+  }, [frequency, selectedDate, type]);
+
 
   // Delete transaction
   const handleDelete = async (record) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token"); // ✅ Ensure token is included
+      const token = localStorage.getItem("token"); 
       if (!token) {
         message.error("Unauthorized: Please log in again.");
         return;
@@ -136,8 +145,13 @@ const HomePage = () => {
     } catch (error) {
       setLoading(false);
       console.error("Transaction Processing Error:", error);
-      message.success("Please Reload to vie transaction");
+      message.success("Please Reload to view transaction");
     }
+  };
+
+  const handleView = (record) => {
+    setViewTransaction(record);
+    setshowViewModal(true);
   };
 
   // Table columns
@@ -150,7 +164,7 @@ const HomePage = () => {
     { title: 'Amount', dataIndex: 'amount' },
     { title: 'Type', dataIndex: 'type' },
     { title: 'Category', dataIndex: 'category' },
-    { title: 'Reference', dataIndex: 'reference' },
+    { title: 'Description', dataIndex: 'description' },
     {
       title: 'Actions',
       render: (text, record) => (
@@ -163,7 +177,7 @@ const HomePage = () => {
             }}
           />
           <DeleteOutlined className='mx-2' onClick={() => handleDelete(record)} />
-          <EyeOutlined className='mx-2'></EyeOutlined>
+          <EyeOutlined className='mx-2' onClick={() => handleView(record)} />
         </div>
       ),
     },
@@ -171,6 +185,7 @@ const HomePage = () => {
 
   return (
     <Layout>
+      <img src="/freepik-modern-linear-money-care-accounting-logo-202503081042289XZP.png" alt="Monetrix Logo" className="logo" />
       {loading && <Spinner />}
       <div className='filters'>
         <div>
@@ -251,6 +266,23 @@ const HomePage = () => {
           </div>
         </Form>
       </Modal>
+      <Modal
+        title="Details:"
+        open={showViewModal}
+        onCancel={() => setshowViewModal(false)}
+        footer={null}
+      >
+        {viewTransaction && (
+          <Card className='view-transaction-card'>
+            <p><strong>Date:</strong> {moment(viewTransaction.date).format('YYYY-MM-DD')}</p>
+            <p><strong>Amount:</strong> {viewTransaction.amount}</p>
+            <p><strong>Type:</strong> {viewTransaction.type}</p>
+            <p><strong>Category:</strong> {viewTransaction.category}</p>
+            <p><strong>Description:</strong> {viewTransaction.description}</p>
+          </Card>
+        )}
+      </Modal>
+
     </Layout>
   );
 };

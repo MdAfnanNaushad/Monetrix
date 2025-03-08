@@ -41,9 +41,10 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="login-page">
+    <div className="login-page"> 
+    <img src="/freepik-modern-linear-money-care-accounting-logo-202503081042289XZP.png" alt="Monetrix Logo" className="logo" />
+      <h1 className="title">Monetrix</h1>
       {loading && <Spinner />}
-      <Header/>
       <Form layout="vertical" onFinish={submitHandler}>
         <h1>Login</h1>
         <Form.Item label="Email" name="email" rules={[{ required: true, message: "Please enter your email" }]}> 

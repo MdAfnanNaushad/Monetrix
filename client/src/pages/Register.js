@@ -48,6 +48,8 @@ const Register = () => {
   return (
     <>
       <div className="register-page">
+      <img src="/freepik-modern-linear-money-care-accounting-logo-202503081042289XZP.png" alt="Monetrix Logo" className="logo" />
+      <h1 className="title">Monetrix</h1>
         {loading && <Spinner />}
         <Form layout="vertical" onFinish={submitHandler}>
           <h1>Register Form</h1>

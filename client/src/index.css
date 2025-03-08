@@ -7,6 +7,12 @@
 .content {
   height: 100%;
 }
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Remove scrollbar */
+}
 
 /* transection page */
 .filters {
@@ -24,7 +30,7 @@
 /* antd icons */
 
 .switch-icons {
-  border: 1px solid rgba(0, 0, 0, 0.677);
+  border: 2px solid rgb(3, 191, 254);
   border-radius: 5px;
   padding: 10px 15px;
 }
@@ -32,17 +38,18 @@
 .anticon svg {
   font-size: 20px;
   cursor: pointer;
+  border: #53a4cf;
 }
 
 .active-icon {
-  color: black;
+  color: rgb(36, 187, 242);
 }
 .inactive-icon {
-  color: gray;
+  color: rgb(241, 250, 253);
 }
 .footer {
   position: relative;
-  top: 17rem;
+  top: 21rem;
   background-color: transparent;
 }
 .navbar-brand {
@@ -58,96 +65,108 @@
   position: relative;
   left: 6.5rem;
 }
-#root{
-  height: 100%;
-  background: url('/public/Monetrixbg1.png');
+#root {
+  height: 100vh;
+  background: url("/public/Monetrixbg1.png");
   background-size: cover;
 }
 
 /* Change the color of the Select options */
 .ant-select-selector {
-  background-color: #185495 ; /* Background color of the select box */
-  color: #f9f1f1 ; /* Text color */
-  border: 1px solid #ccc ; /* Border color */
+  background-color: #185495; /* Background color of the select box */
+  color: #f9f1f1; /* Text color */
+  border: 1px solid #ccc; /* Border color */
 }
 
 /* Change the color of the Select options */
- .ant-select-item-option {
-  background-color: #fff ; /* Background color of the options */
-  color: #333 ; /* Text color */
+.ant-select-item-option {
+  background-color: #fff; /* Background color of the options */
+  color: #333; /* Text color */
 }
- .ant-select-item-option:hover {
+.ant-select-item-option:hover {
   background-color: #e6f7ff !important; /* Background color on hover */
   color: #1890ff !important; /* Text color on hover */
 }
 
 /* Change the color of the selected option */
- .ant-select-item-option-selected {
+.ant-select-item-option-selected {
   background-color: #003f61 !important; /* Background color of the selected option */
   color: #1890ff !important; /* Text color of the selected option */
 }
 
 /* Additional styles for the dropdown */
 .ant-select-dropdown {
-  background-color: rgb(13, 102, 198) !important; /* Background color of the dropdown */
+  background-color: rgb(
+    13,
+    102,
+    198
+  ) !important; /* Background color of the dropdown */
   color: white !important; /* Text color of the dropdown */
   border: none !important; /* Remove border */
   padding: 0 !important; /* Remove padding */
 }
 
 .ant-select-dropdown-menu {
-  background-color: rgb(13, 102, 198) ; /* Background color of the dropdown menu */
-  color: white ; /* Text color of the dropdown menu */
-  border: none ; /* Remove border */
-  padding: 0 ; /* Remove padding */
+  background-color: rgb(
+    13,
+    102,
+    198
+  ); /* Background color of the dropdown menu */
+  color: white; /* Text color of the dropdown menu */
+  border: none; /* Remove border */
+  padding: 0; /* Remove padding */
 }
 
 .ant-select-dropdown-menu-item {
-  background-color: rgb(13, 102, 198) ; /* Background color of the dropdown items */
-  color: white ; /* Text color of the dropdown items */
-  padding: 8px 16px ; /* Adjust padding */
+  background-color: rgb(
+    13,
+    102,
+    198
+  ); /* Background color of the dropdown items */
+  color: white; /* Text color of the dropdown items */
+  padding: 8px 16px; /* Adjust padding */
 }
 
 .ant-select-dropdown-menu-item:hover {
-  background-color: #e6f7ff ; /* Background color on hover */
-  color: #1890ff ; /* Text color on hover */
+  background-color: #e6f7ff; /* Background color on hover */
+  color: #1890ff; /* Text color on hover */
 }
 
- .ant-select-dropdown-menu-item-selected {
-  background-color: #003f61 ; /* Background color of the selected item */
-  color: #1890ff ; /* Text color of the selected item */
+.ant-select-dropdown-menu-item-selected {
+  background-color: #003f61; /* Background color of the selected item */
+  color: #1890ff; /* Text color of the selected item */
 }
-.ant-table-row{
+.ant-table-row {
   background: rgb(49, 108, 203);
   font-family: serif;
   font-weight: bold;
   color: white;
 }
-.ant-table-row:hover{
+.ant-table-row:hover {
   background: #185495;
- color: black;
- font-weight: bolder;
+  color: black;
+  font-weight: bolder;
 }
-.ant-table{
+.ant-table {
   background: #53a4cf;
   color: black;
 }
 .login-page {
-  background: url('/public/Monetrixbg1.png');
+  background: url("/public/Monetrixbg1.png");
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  
 }
 
 .login-page .ant-form {
   width: 100%;
   max-width: 400px;
   padding: 20px;
-  background-color: white;
+  background-color: rgb(15, 44, 81);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  border: 1px solid rgb(235, 215, 36);
 }
 
 .login-page h1 {
@@ -157,7 +176,7 @@
 }
 
 .login-page .ant-form-item-label > label {
-  color: #333; /* Text color for form labels */
+  color: #fffcfc; /* Text color for form labels */
 }
 
 .login-page .ant-input {
@@ -177,7 +196,7 @@
 
 .login-page .btn-primary:hover {
   background-color: #40a9ff;
-  border-color: #40a9ff;
+  border-color: #e2ff08;
 }
 
 .login-page .d-flex {
@@ -196,21 +215,24 @@
 }
 
 .register-page {
-  background: url('/public/Monetrixbg1.png') no-repeat center center fixed;
+  background: url("/public/Monetrixbg1.png") no-repeat center center fixed;
   background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  
 }
 
 .register-page .ant-form {
   width: 100%;
   max-width: 400px;
   padding: 20px;
-  background-color: white;
+  background-color:  rgb(15, 44, 81);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  border: 2px solid gold;
+  margin-top: 5rem;
 }
 
 .register-page h1 {
@@ -220,7 +242,7 @@
 }
 
 .register-page .ant-form-item-label > label {
-  color: #333; /* Text color for form labels */
+  color: #ffffff; /* Text color for form labels */
 }
 
 .register-page .ant-input {
@@ -256,4 +278,81 @@
 
 .register-page .d-flex a:hover {
   text-decoration: underline;
+}
+.title {
+  position: relative;
+  bottom: 12.5rem;
+  left: 17rem;
+  font-family: serif;
+  color: white !important;
+  font-weight: bolder;
+}
+
+.card {
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #1890ff;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.card-body {
+  background-color: #f9f9f9;
+}
+
+.card-body h5 {
+  margin-bottom: 10px;
+  font-family: serif;
+  font-weight: 600;
+}
+
+.progress-bar {
+  background-color: #1890ff;
+}
+
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+.logo {
+  height: 50px;
+  left: 10rem;
+  bottom: 13rem;
+  position: relative;
+  display: block;
+  margin: 0 -103px;
+  max-width: 68px;
+  border-radius: 50%;
+}
+.logo2{
+  position: relative;
+  /* height: 39px; */
+  width: 45px;
+  left: -7rem;
+}
+
+.view-transaction-card {
+  background-color: #f9f9f9; /* Light background color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  padding: 20px; /* Padding inside the card */
+  margin: 20px 0; /* Margin around the card */
+}
+
+.view-transaction-card p {
+  margin: 10px 0; /* Margin between paragraphs */
+  font-size: 16px; /* Font size for text */
+  color: #333; /* Text color */
+}
+
+.view-transaction-card strong {
+  color: #1890ff; /* Primary color for labels */
 }

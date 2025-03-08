@@ -23,6 +23,7 @@ const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light ">
       <div className="container">
+      <img src="/freepik-modern-linear-money-care-accounting-logo-202503081042289XZP.png" alt="Monetrix Logo" className="logo2" />
         <Link className="navbar-brand" to="/">Monetrix</Link>
         <button
           className="navbar-toggler"
