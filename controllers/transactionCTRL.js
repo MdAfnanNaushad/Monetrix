@@ -54,26 +54,23 @@ const fetchTransactions = async (req, res) => {
 // Edit a transaction
 const editTransaction = async (req, res) => {
   try {
-    // ✅ Check if token is provided
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json({ message: "Unauthorized: No token provided" });
     }
 
-    // ✅ Verify token and extract `userId`
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log("Decoded User ID for Edit:", decoded.userId);
 
-    // ✅ Check if required fields are present
     if (!req.body.transactionId || !req.body.payload) {
       return res.status(400).json({ message: "Transaction ID and payload are required" });
     }
 
-    // ✅ Ensure the transaction belongs to the user before updating
+
     const updatedTransaction = await transactionModel.findOneAndUpdate(
-      { _id: req.body.transactionId, userid: decoded.userId }, // Ensure ownership
+      { _id: req.body.transactionId, userid: decoded.userId }, 
       { $set: req.body.payload },
-      { new: true } // Return updated document
+      { new: true } 
     );
 
     if (!updatedTransaction) {

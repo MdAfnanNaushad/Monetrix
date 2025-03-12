@@ -31,7 +31,7 @@ const transactionSchema = new mongoose.Schema(
       required: true
     }
   },
-  { timestamps: true } // Move the timestamps option here
+  { timestamps: true } 
 );
 
 const transactionModel = mongoose.model('transaction', transactionSchema);
