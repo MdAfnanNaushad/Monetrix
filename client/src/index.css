@@ -71,39 +71,39 @@ html, body {
   background-size: cover;
 }
 
-/* Change the color of the Select options */
+
 .ant-select-selector {
-  background-color: #185495; /* Background color of the select box */
-  color: #f9f1f1; /* Text color */
-  border: 1px solid #ccc; /* Border color */
+  background-color: #185495; 
+  color: #f9f1f1; 
+  border: 1px solid #ccc; 
 }
 
-/* Change the color of the Select options */
+
 .ant-select-item-option {
-  background-color: #fff; /* Background color of the options */
-  color: #333; /* Text color */
+  background-color: #fff; 
+  color: #333; 
 }
 .ant-select-item-option:hover {
-  background-color: #e6f7ff !important; /* Background color on hover */
-  color: #1890ff !important; /* Text color on hover */
+  background-color: #e6f7ff !important; 
+  color: #1890ff !important; 
 }
 
-/* Change the color of the selected option */
+
 .ant-select-item-option-selected {
-  background-color: #003f61 !important; /* Background color of the selected option */
-  color: #1890ff !important; /* Text color of the selected option */
+  background-color: #003f61 !important; 
+  color: #1890ff !important; 
 }
 
-/* Additional styles for the dropdown */
+
 .ant-select-dropdown {
   background-color: rgb(
     13,
     102,
     198
-  ) !important; /* Background color of the dropdown */
-  color: white !important; /* Text color of the dropdown */
-  border: none !important; /* Remove border */
-  padding: 0 !important; /* Remove padding */
+  ) !important; 
+  color: white !important;
+  border: none !important;
+  padding: 0 !important; 
 }
 
 .ant-select-dropdown-menu {
@@ -111,10 +111,10 @@ html, body {
     13,
     102,
     198
-  ); /* Background color of the dropdown menu */
-  color: white; /* Text color of the dropdown menu */
-  border: none; /* Remove border */
-  padding: 0; /* Remove padding */
+  );
+  color: white; 
+  border: none; 
+  padding: 0;
 }
 
 .ant-select-dropdown-menu-item {
@@ -122,19 +122,19 @@ html, body {
     13,
     102,
     198
-  ); /* Background color of the dropdown items */
-  color: white; /* Text color of the dropdown items */
-  padding: 8px 16px; /* Adjust padding */
+  ); 
+  color: white; 
+  padding: 8px 16px;
 }
 
 .ant-select-dropdown-menu-item:hover {
-  background-color: #e6f7ff; /* Background color on hover */
-  color: #1890ff; /* Text color on hover */
+  background-color: #e6f7ff; 
+  color: #1890ff; 
 }
 
 .ant-select-dropdown-menu-item-selected {
-  background-color: #003f61; /* Background color of the selected item */
-  color: #1890ff; /* Text color of the selected item */
+  background-color: #003f61; 
+  color: #1890ff; 
 }
 .ant-table-row {
   background: rgb(49, 108, 203);
@@ -172,11 +172,11 @@ html, body {
 .login-page h1 {
   text-align: center;
   margin-bottom: 20px;
-  color: #1890ff; /* Primary color for the heading */
+  color: #1890ff; 
 }
 
 .login-page .ant-form-item-label > label {
-  color: #fffcfc; /* Text color for form labels */
+  color: #fffcfc;
 }
 
 .login-page .ant-input {
@@ -238,11 +238,11 @@ html, body {
 .register-page h1 {
   text-align: center;
   margin-bottom: 20px;
-  color: #1890ff; /* Primary color for the heading */
+  color: #1890ff;
 }
 
 .register-page .ant-form-item-label > label {
-  color: #ffffff; /* Text color for form labels */
+  color: #ffffff; 
 }
 
 .register-page .ant-input {
@@ -340,19 +340,19 @@ html, body {
 }
 
 .view-transaction-card {
-  background-color: #f9f9f9; /* Light background color */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  padding: 20px; /* Padding inside the card */
-  margin: 20px 0; /* Margin around the card */
+  background-color: #f9f9f9;
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  padding: 20px; 
+  margin: 20px 0; 
 }
 
 .view-transaction-card p {
-  margin: 10px 0; /* Margin between paragraphs */
-  font-size: 16px; /* Font size for text */
-  color: #333; /* Text color */
+  margin: 10px 0;
+  font-size: 16px; 
+  color: #333; 
 }
 
 .view-transaction-card strong {
-  color: #1890ff; /* Primary color for labels */
+  color: #1890ff;
 }

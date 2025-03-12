@@ -3,11 +3,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import Layout from '../components/layouts/Layout';
 import moment from 'moment';
-import {Card, Modal, Form, Input, Select, message, Table, DatePicker } from 'antd';
+import { Card, Modal, Form, Input, Select, message, Table, DatePicker } from 'antd';
 import { EditOutlined, DeleteOutlined, UnorderedListOutlined, AreaChartOutlined, EyeOutlined } from '@ant-design/icons';
 import Spinner from '../components/Spinner';
 import Analytics from '../components/Analytics';
-import { debounce } from '../utils/debounce'; // Import debounce function
+import { debounce } from '../utils/debounce'; 
 
 
 
@@ -15,7 +15,7 @@ const { RangePicker } = DatePicker;
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const debouncedNavigate = debounce(navigate, 300); // Wrap navigate with debounce
+  const debouncedNavigate = debounce(navigate, 300); 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allTransaction, setAllTransaction] = useState([]);
@@ -23,10 +23,10 @@ const HomePage = () => {
   const [selectedDate, setSelectedDate] = useState([]);
   const [type, setType] = useState('all');
   const [viewData, setViewData] = useState('table');
-  const [viewTransaction, setViewTransaction] = useState(null); // State for transaction details
+  const [viewTransaction, setViewTransaction] = useState(null);
   const [editable, setEditable] = useState(null);
   const [showViewModal, setshowViewModal] = useState(false)
-  const hasFetched = useRef(false); // Prevents multiple API calls
+  const hasFetched = useRef(false); 
 
   const fetchTransactions = async () => {
     try {
@@ -42,7 +42,7 @@ const HomePage = () => {
       };
 
       const res = await axios.post(
-        "http://localhost:3003/api/v1/transactions/get-transactions",payload,
+        "http://localhost:3003/api/v1/transactions/get-transactions", payload,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -73,7 +73,7 @@ const HomePage = () => {
   const handleDelete = async (record) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token"); 
+      const token = localStorage.getItem("token");
       if (!token) {
         message.error("Unauthorized: Please log in again.");
         return;
@@ -85,7 +85,7 @@ const HomePage = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}` // ✅ Token is now included
+            Authorization: `Bearer ${token}`
           }
         }
       );
@@ -120,7 +120,7 @@ const HomePage = () => {
         : "http://localhost:3003/api/v1/transactions/add-transaction";
 
       const payload = editable
-        ? { transactionId: editable._id, payload: values } // ✅ Ensure correct payload format
+        ? { transactionId: editable._id, payload: values } 
         : values;
 
       const res = await axios.post(endpoint, payload, {
@@ -135,7 +135,7 @@ const HomePage = () => {
         setShowModal(false);
         setEditable(null);
 
-        // ✅ Fetch updated transactions
+        
         fetchTransactions();
       } else {
         message.success("Please Reload to vie transaction");
@@ -247,7 +247,7 @@ const HomePage = () => {
           <Form.Item label='Type' name='type' rules={[{ required: true }]}>
             <Select className='Options'>
               <Select.Option className='list' value='income'>Income</Select.Option>
-              <Select.Option className='list'  value='expense'>Expense</Select.Option>
+              <Select.Option className='list' value='expense'>Expense</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item label='Category' name='category' rules={[{ required: true }]}>

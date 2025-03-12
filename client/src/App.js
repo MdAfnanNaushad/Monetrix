@@ -17,7 +17,7 @@ function App() {
 export function ProtectedRoutes({ children }) {
   const token = localStorage.getItem("token");
   if (!token) {
-    return <Navigate to="/login" replace />; // ✅ `replace` prevents history stack issues
+    return <Navigate to="/login" replace />;
   }
   return children;
 }

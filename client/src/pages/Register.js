@@ -8,11 +8,10 @@ const Register = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  // Handle form submission
   const submitHandler = async (values) => {
     try {
       setLoading(true);
-      console.log("Sending Payload:", values); // Debugging
+      console.log("Sending Payload:", values); 
 
       const res = await axios.post(
         "http://localhost:3003/api/v1/users/register",
@@ -37,8 +36,6 @@ const Register = () => {
       setLoading(false);
     }
   };
-
-  // Redirect if user is already logged in
   useEffect(() => {
     if (localStorage.getItem("user")) {
       navigate("/");
