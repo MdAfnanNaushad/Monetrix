@@ -13,7 +13,6 @@ const fetchTransactions = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized: No token provided" });
     }
 
-    // ✅ Verify token and extract user ID
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log("Decoded User ID:", decoded.userId); // Debugging
 
@@ -33,9 +32,10 @@ const fetchTransactions = async (req, res) => {
     }
 
     // ✅ Ensure type filter is applied correctly
-    if (req.body.type && req.body.type !== "all") {
-      filter.type = req.body.type;
+    if (req.body.type && req.body.type !== "all" && typeof req.body.type === 'string') {
+      filter.type = req.body.type.toLowerCase();
     }
+    
 
     console.log("Applying Filter:", filter); // Debugging  
 

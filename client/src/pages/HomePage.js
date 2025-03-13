@@ -7,7 +7,7 @@ import { Card, Modal, Form, Input, Select, message, Table, DatePicker } from 'an
 import { EditOutlined, DeleteOutlined, UnorderedListOutlined, AreaChartOutlined, EyeOutlined } from '@ant-design/icons';
 import Spinner from '../components/Spinner';
 import Analytics from '../components/Analytics';
-import { debounce } from '../utils/debounce'; 
+import { debounce } from '../utils/debounce';
 
 
 
@@ -15,7 +15,7 @@ const { RangePicker } = DatePicker;
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const debouncedNavigate = debounce(navigate, 300); 
+  const debouncedNavigate = debounce(navigate, 300);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allTransaction, setAllTransaction] = useState([]);
@@ -26,7 +26,7 @@ const HomePage = () => {
   const [viewTransaction, setViewTransaction] = useState(null);
   const [editable, setEditable] = useState(null);
   const [showViewModal, setshowViewModal] = useState(false)
-  const hasFetched = useRef(false); 
+  const hasFetched = useRef(false);
 
   const fetchTransactions = async () => {
     try {
@@ -37,9 +37,11 @@ const HomePage = () => {
       }
       const payload = {
         frequency,
-        selectedDate: frequency === 'custom' ? selectedDate : [],
-        type,
+        selectedDate: frequency === 'custom' ? selectedDate.map(date => moment(date).toISOString()) : [],
+        type: type.toLowerCase(),
       };
+
+      console.log("Request Payload:", payload); // Debugging
 
       const res = await axios.post(
         "http://localhost:3003/api/v1/transactions/get-transactions", payload,
@@ -120,7 +122,7 @@ const HomePage = () => {
         : "http://localhost:3003/api/v1/transactions/add-transaction";
 
       const payload = editable
-        ? { transactionId: editable._id, payload: values } 
+        ? { transactionId: editable._id, payload: values }
         : values;
 
       const res = await axios.post(endpoint, payload, {
@@ -132,13 +134,26 @@ const HomePage = () => {
 
       if (res.status === 200) {
         message.success(editable ? "Transaction updated successfully" : "Transaction added successfully");
+
+        if (editable) {
+          setAllTransaction((prev) =>
+            prev.map((txn) =>
+              txn._id === editable._id ? { ...txn, ...values } : txn
+            )
+          );
+        } else {
+          setAllTransaction((prev) => [...prev, res.data.transaction]);
+        }
+
         setShowModal(false);
         setEditable(null);
 
-        
-        fetchTransactions();
-      } else {
-        message.success("Please Reload to vie transaction");
+
+        await fetchTransactions();
+      }
+
+      else {
+        message.success("Please Reload to view  transaction");
       }
 
       setLoading(false);
@@ -202,10 +217,10 @@ const HomePage = () => {
         </div>
         <div>
           <h6>Select Type</h6>
-          <Select className='Options' value={type} onChange={(values) => setType(values)}>
+          <Select className='Options' value={type} onChange={(values) => setType(values.toLowerCase())}>
             <Select.Option className='list' value='all'>All</Select.Option>
-            <Select.Option className='list' value='Income'>Income</Select.Option>
-            <Select.Option className='list' value='Expense'>Expense</Select.Option>
+            <Select.Option className='list' value='income'>Income</Select.Option>
+            <Select.Option className='list' value='expense'>Expense</Select.Option>
           </Select>
         </div>
         <div className='switch-icons'>

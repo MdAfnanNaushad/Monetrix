@@ -13,7 +13,8 @@ const transactionSchema = new mongoose.Schema(
     },
     type:{
       type: String,
-      required: [true, 'Please add a type']
+      required: [true, 'Please add a type'],
+      lowercase: true
     },
     category: {
       type: String,
