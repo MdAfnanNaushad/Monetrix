@@ -24,7 +24,5 @@ router.post('/delete-transaction',authMiddleware, deleteTransaction);
 //get transaction
 router.post('/get-transactions',authMiddleware, fetchTransactions);
 
-//view Transaction
-// router.post('/view-transaction')
 
 module.exports = router; // Because of ES6 module system

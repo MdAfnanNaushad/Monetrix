@@ -4,10 +4,9 @@ const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken')
 
 // Get all transactions
-// Get all transactions
 const fetchTransactions = async (req, res) => {
   try {
-    // ✅ Extract token from headers
+   
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json({ message: "Unauthorized: No token provided" });
@@ -16,10 +15,10 @@ const fetchTransactions = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log("Decoded User ID:", decoded.userId); // Debugging
 
-    // ✅ Check how `userid` is stored in your MongoDB (double-check field name)
-    let filter = { userid: decoded.userId };  // If `userId` is different in DB, update it here.
+   
+    let filter = { userid: decoded.userId };
 
-    // ✅ Handle date filtering
+
     if (req.body.frequency && req.body.frequency !== "custom") {
       filter.date = { 
         $gte: moment().subtract(Number(req.body.frequency), "days").startOf('day').toDate()
@@ -31,15 +30,15 @@ const fetchTransactions = async (req, res) => {
       };
     }
 
-    // ✅ Ensure type filter is applied correctly
+    
     if (req.body.type && req.body.type !== "all" && typeof req.body.type === 'string') {
       filter.type = req.body.type.toLowerCase();
     }
     
 
-    console.log("Applying Filter:", filter); // Debugging  
+    console.log("Applying Filter:", filter); 
 
-    // ✅ Fetch transactions with correct filters
+    
     const transactions = await transactionModel.find(filter).sort({ date: -1 });
 
     console.log("Fetched Transactions:", transactions); // Debugging  
