@@ -14,7 +14,7 @@ app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
 app.use(cors({
-  origin: 'http://localhost:3001', 
+  origin: process.env.CLIENT_URL || '*', // Use CLIENT_URL from environment or allow all origins
   credentials: true
 }));
 
@@ -25,12 +25,12 @@ connectDb();
 app.use('/api/v1/users', require('./routes/userRoute'));
 app.use('/api/v1/transactions', require('./routes/transactionRoute'));
 
-//
-app.use(express.static(path.join(__dirname,"./client/build")))
+// Serve static files
+app.use(express.static(path.join(__dirname, "./client/build")));
 
-app.get('*', function (req,res){
-  res.sendFile(path.join(__dirname, "./client/build/index.html"))
-})
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
 
 // Start server
 const PORT = process.env.PORT || 3003;
