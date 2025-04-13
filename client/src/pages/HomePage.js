@@ -7,15 +7,11 @@ import { Card, Modal, Form, Input, Select, message, Table, DatePicker } from 'an
 import { EditOutlined, DeleteOutlined, UnorderedListOutlined, AreaChartOutlined, EyeOutlined } from '@ant-design/icons';
 import Spinner from '../components/Spinner';
 import Analytics from '../components/Analytics';
-import { debounce } from '../utils/debounce';
-
-
 
 const { RangePicker } = DatePicker;
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const debouncedNavigate = debounce(navigate, 300);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allTransaction, setAllTransaction] = useState([]);
@@ -51,10 +47,8 @@ const HomePage = () => {
       );
       if (res.status === 200) {
         setAllTransaction(res.data);
-        console.log("Transactions fetched:", res.data);
       }
     } catch (error) {
-      console.error("Error fetching transactions:", error);
       message.error("Failed to load transactions.");
     }
   };
@@ -101,7 +95,6 @@ const HomePage = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.error("Delete Transaction Error:", error);
       message.error("Failed to delete transaction.");
     }
   };
@@ -159,7 +152,6 @@ const HomePage = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.error("Transaction Processing Error:", error);
       message.success("Please Reload to view transaction");
     }
   };
@@ -200,48 +192,81 @@ const HomePage = () => {
 
   return (
     <Layout>
-      <img src="/freepik-modern-linear-money-care-accounting-logo-202503081042289XZP.png" alt="Monetrix Logo" className="logo" />
+      <img
+        src="/freepik-modern-linear-money-care-accounting-logo-202503081042289XZP.png"
+        alt="Monetrix Logo"
+        className="logo responsive-logo"
+      />
       {loading && <Spinner />}
-      <div className='filters'>
+      <div className="filters responsive-filters">
         <div>
           <h6>Select Frequency</h6>
-          <Select className='Options' value={frequency} onChange={(values) => setFrequency(values)}>
-            <Select.Option value='7'>Last Week</Select.Option>
-            <Select.Option value='30'>Last Month</Select.Option>
-            <Select.Option value='365'>Last Year</Select.Option>
-            <Select.Option value='custom'>Custom</Select.Option>
+          <Select
+            className="Options responsive-select"
+            value={frequency}
+            onChange={(values) => setFrequency(values)}
+          >
+            <Select.Option value="7">Last Week</Select.Option>
+            <Select.Option value="30">Last Month</Select.Option>
+            <Select.Option value="365">Last Year</Select.Option>
+            <Select.Option value="custom">Custom</Select.Option>
           </Select>
-          {frequency === 'custom' && (
-            <RangePicker value={selectedDate} onChange={(values) => setSelectedDate(values)} />
+          {frequency === "custom" && (
+            <RangePicker
+              className="responsive-range-picker"
+              value={selectedDate}
+              onChange={(values) => setSelectedDate(values)}
+            />
           )}
         </div>
         <div>
           <h6>Select Type</h6>
-          <Select className='Options' value={type} onChange={(values) => setType(values.toLowerCase())}>
-            <Select.Option className='list' value='all'>All</Select.Option>
-            <Select.Option className='list' value='income'>Income</Select.Option>
-            <Select.Option className='list' value='expense'>Expense</Select.Option>
+          <Select
+            className="Options responsive-select"
+            value={type}
+            onChange={(values) => setType(values.toLowerCase())}
+          >
+            <Select.Option className="list" value="all">
+              All
+            </Select.Option>
+            <Select.Option className="list" value="income">
+              Income
+            </Select.Option>
+            <Select.Option className="list" value="expense">
+              Expense
+            </Select.Option>
           </Select>
         </div>
-        <div className='switch-icons'>
+        <div className="switch-icons responsive-icons">
           <UnorderedListOutlined
-            className={`mx-2 ${viewData === 'table' ? 'active-icon' : 'inactive-icon'}`}
-            onClick={() => setViewData('table')}
+            className={`mx-2 ${
+              viewData === "table" ? "active-icon" : "inactive-icon"
+            }`}
+            onClick={() => setViewData("table")}
           />
           <AreaChartOutlined
-            className={`mx-2 ${viewData === 'analytics' ? 'active-icon' : 'inactive-icon'}`}
-            onClick={() => setViewData('analytics')}
+            className={`mx-2 ${
+              viewData === "analytics" ? "active-icon" : "inactive-icon"
+            }`}
+            onClick={() => setViewData("analytics")}
           />
         </div>
         <div>
-          <button className='btn btn-primary' onClick={() => setShowModal(true)}>
+          <button
+            className="btn btn-primary responsive-button"
+            onClick={() => setShowModal(true)}
+          >
             Add New
           </button>
         </div>
       </div>
-      <div className='content'>
-        {viewData === 'table' ? (
-          <Table columns={columns} dataSource={allTransaction} />
+      <div className="content responsive-content">
+        {viewData === "table" ? (
+          <Table
+            className="responsive-table"
+            columns={columns}
+            dataSource={allTransaction}
+          />
         ) : (
           <Analytics allTransaction={allTransaction} />
         )}
