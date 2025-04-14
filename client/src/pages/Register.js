@@ -13,8 +13,10 @@ const Register = () => {
       setLoading(true);
       console.log("Sending Payload:", values); 
 
+      const API_URL = process.env.REACT_APP_API_URL || "https://monetrix.onrender.com/api/v1";
+
       const res = await axios.post(
-        "http://localhost:3003/api/v1/users/register",
+        `${API_URL}/users/register`,
         {
           name: values.name.trim(),
           email: values.email.trim().toLowerCase(),

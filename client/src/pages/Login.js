@@ -12,7 +12,8 @@ const Login = () => {
   const submitHandler = async (values) => {
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:3003/api/v1/users/login", values, {
+      const API_URL = process.env.REACT_APP_API_URL || "https://monetrix.onrender.com/api/v1";
+      const res = await axios.post(`${API_URL}/users/login`, values, {
         headers: { "Content-Type": "application/json" },
       });
 

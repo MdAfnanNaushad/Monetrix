@@ -23,6 +23,7 @@ const HomePage = () => {
   const [editable, setEditable] = useState(null);
   const [showViewModal, setshowViewModal] = useState(false)
   const hasFetched = useRef(false);
+  const API_URL = process.env.REACT_APP_API_URL || "https://monetrix.onrender.com/api/v1";
 
   const fetchTransactions = async () => {
     try {
@@ -40,7 +41,7 @@ const HomePage = () => {
       console.log("Request Payload:", payload); // Debugging
 
       const res = await axios.post(
-        "http://localhost:3003/api/v1/transactions/get-transactions", payload,
+        `${API_URL}/transactions/get-transactions`, payload,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -76,7 +77,7 @@ const HomePage = () => {
       }
 
       const res = await axios.post(
-        "http://localhost:3003/api/v1/transactions/delete-transaction",
+        `${API_URL}/transactions/delete-transaction`,
         { transactionId: record._id },
         {
           headers: {
@@ -111,8 +112,8 @@ const HomePage = () => {
       setLoading(true);
 
       const endpoint = editable
-        ? "http://localhost:3003/api/v1/transactions/edit-transaction"
-        : "http://localhost:3003/api/v1/transactions/add-transaction";
+        ? `${API_URL}/transactions/edit-transaction`
+        : `${API_URL}/transactions/add-transaction`;
 
       const payload = editable
         ? { transactionId: editable._id, payload: values }
