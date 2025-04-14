@@ -530,8 +530,8 @@ body {
   }
 
   .title {
-    bottom: 8rem;
-    left: 5rem;
+    bottom: 12rem;
+    left: 16rem;
     font-size: 1rem;
   }
 
@@ -549,14 +549,33 @@ body {
     margin-left: 35px;
   }
 
-  .login-page {
-    padding: 10px; /* Add padding to prevent content from touching screen edges */
+  .login-page,
+  .register-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    padding: 10px; /* Prevent content from touching screen edges */
+    box-sizing: border-box; /* Include padding in total width/height */
   }
 
-  .login-page .ant-form {
-    max-width: 300px; /* Adjust form width for better fit */
-    padding: 15px; /* Reduce padding for smaller screens */
+  .login-page .ant-form,
+  .register-page .ant-form {
+    width: 100%; /* Use full width of the screen */
+    max-width: 320px; /* Limit the form width */
+    padding: 15px; /* Add padding for better spacing */
     border-radius: 6px; /* Slightly reduce border radius */
+    background-color: rgb(
+      15,
+      44,
+      81
+    ); /* Ensure background color is consistent */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    border: 1px solid rgb(235, 215, 36); /* Add border for better visibility */
+    position: relative;
+    left: 30px;
+    max-width: 329px;
+    padding: 19px;
   }
 
   .login-page h1 {
@@ -564,18 +583,26 @@ body {
     margin-bottom: 15px; /* Reduce margin for better spacing */
   }
 
-  .login-page .ant-input {
-    height: 36px; /* Slightly reduce input height */
-    font-size: 14px; /* Adjust font size for inputs */
-  }
-
-  .login-page .btn-primary {
+  .login-page .btn-primary,
+  .register-page .btn-primary {
     height: 36px; /* Adjust button height */
     font-size: 14px; /* Adjust font size for buttons */
     padding: 0 10px; /* Add padding for better clickability */
+    width: 100%; /* Ensure buttons span the full width */
+    background-color: #1890ff; /* Consistent button color */
+    border-color: #1890ff; /* Consistent border color */
+    color: white; /* Ensure text is visible */
+    border-radius: 4px; /* Keep buttons rounded */
   }
 
-  .login-page .d-flex {
+  .login-page .btn-primary:hover,
+  .register-page .btn-primary:hover {
+    background-color: #40a9ff; /* Change color on hover */
+    border-color: #40a9ff; /* Change border color on hover */
+  }
+
+  .login-page .d-flex,
+  .register-page .d-flex {
     flex-direction: column; /* Stack elements vertically */
     align-items: flex-start; /* Align items to the start */
     gap: 10px; /* Add spacing between elements */
@@ -585,19 +612,12 @@ body {
     font-size: 14px; /* Adjust font size for links */
   }
 
-  .login-page .ant-form,
-  .register-page .ant-form {
-    position: relative;
-    left: 21px;
-    max-width: 329px;
-    padding: 19px;
-  }
-
   .login-page h1,
   .register-page h1 {
-    font-size: 2.2rem;
-    bottom: 12rem;
-    left: 16rem;
+    font-size: 1.8rem; /* Adjust font size for better readability */
+    margin-bottom: 15px; /* Reduce margin for better spacing */
+    text-align: center; /* Center the heading */
+    color: #1890ff; /* Ensure consistent color */
   }
 
   .card-header {
