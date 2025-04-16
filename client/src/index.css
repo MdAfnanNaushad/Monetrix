@@ -2,6 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
 }
 
 .content {
@@ -96,15 +97,12 @@ body {
 }
 
 .ant-table-cell.amount-column {
-  width: 10%; /* Reduce width for the amount column */
+  width: 10%;
 }
 
 .ant-table-cell.category-column {
-  width: 15%; /* Reduce width for the category column */
+  width: 15%;
 }
-/* transection page */
-
-/* antd icons */
 
 .switch-icons {
   border: 2px solid rgb(3, 191, 254);
@@ -424,6 +422,9 @@ body {
 }
 
 @media screen and (max-width: 1080px) {
+  * {
+    transition: all 0.2s ease-in-out;
+  }
   .content {
     height: auto;
     padding: 10px;
@@ -499,7 +500,11 @@ body {
   }
 
   #root {
-    background-size: cover; /* Ensure the background image still covers the screen */
+    background-size: cover;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   .ant-table {
@@ -575,7 +580,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
     border: 1px solid rgb(235, 215, 36); /* Add border for better visibility */
     position: relative;
-    left: 30px;
+    left: 10px;
     max-width: 329px;
     padding: 19px;
   }
@@ -658,5 +663,8 @@ body {
 
   .responsive-button {
     width: 100%;
+  }
+  *{
+    transition: all 0.2s ease-in-out;
   }
 }

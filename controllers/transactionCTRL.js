@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken')
 // Get all transactions
 const fetchTransactions = async (req, res) => {
   try {
-   
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json({ message: "Unauthorized: No token provided" });
@@ -15,30 +14,29 @@ const fetchTransactions = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log("Decoded User ID:", decoded.userId); // Debugging
 
-   
     let filter = { userid: decoded.userId };
 
 
     if (req.body.frequency && req.body.frequency !== "custom") {
-      filter.date = { 
+      filter.date = {
         $gte: moment().subtract(Number(req.body.frequency), "days").startOf('day').toDate()
       };
     } else if (req.body.selectedDate?.length === 2) {
-      filter.date = { 
-        $gte: new Date(req.body.selectedDate[0]), 
-        $lte: new Date(req.body.selectedDate[1]) 
+      filter.date = {
+        $gte: new Date(req.body.selectedDate[0]),
+        $lte: new Date(req.body.selectedDate[1])
       };
     }
 
-    
+
     if (req.body.type && req.body.type !== "all" && typeof req.body.type === 'string') {
       filter.type = req.body.type.toLowerCase();
     }
-    
 
-    console.log("Applying Filter:", filter); 
 
-    
+    console.log("Applying Filter:", filter);
+
+
     const transactions = await transactionModel.find(filter).sort({ date: -1 });
 
     console.log("Fetched Transactions:", transactions); // Debugging  
@@ -67,9 +65,9 @@ const editTransaction = async (req, res) => {
 
 
     const updatedTransaction = await transactionModel.findOneAndUpdate(
-      { _id: req.body.transactionId, userid: decoded.userId }, 
+      { _id: req.body.transactionId, userid: decoded.userId },
       { $set: req.body.payload },
-      { new: true } 
+      { new: true }
     );
 
     if (!updatedTransaction) {
