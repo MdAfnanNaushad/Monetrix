@@ -281,7 +281,7 @@ const HomePage = () => {
         }}
         footer={false}
       >
-        <Form layout='vertical' onFinish={handleSubmit} initialValues={editable ? editable : { type: 'income', amount: '', category: '', date: '', description: '' }}>
+        <Form key={editable ? editable._id : 'new'} layout='vertical' onFinish={handleSubmit} initialValues={editable ? editable : { type: 'income', amount: '', category: '', date: '', description: '' }}>
           <Form.Item label='Amount' name='amount' rules={[{ required: true }]}>
             <Input type='number' />
           </Form.Item>
