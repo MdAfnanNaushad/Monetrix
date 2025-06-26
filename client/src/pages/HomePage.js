@@ -59,7 +59,7 @@ const HomePage = () => {
     if (hasFetched.current) return;
     hasFetched.current = true;
     fetchTransactions();
-  }, []);
+  }, );
 
   useEffect(() => {
     fetchTransactions();
@@ -281,11 +281,12 @@ const HomePage = () => {
         }}
         footer={false}
       >
-        <Form layout='vertical' onFinish={handleSubmit} initialValues={editable}>
+        <Form layout='vertical' onFinish={handleSubmit} initialValues={editable ? editable : { type: 'income', amount: '', category: '', date: '', description: '' }}>
           <Form.Item label='Amount' name='amount' rules={[{ required: true }]}>
             <Input type='number' />
           </Form.Item>
-          <Form.Item label='Type' name='type' rules={[{ required: true }]}>
+          <Form.Item label='Type' name='type' > 
+            {/* rules={[{ required: true }]} */}
             <Select className='Options'>
               <Select.Option className='list' value='income'>Income</Select.Option>
               <Select.Option className='list' value='expense'>Expense</Select.Option>
