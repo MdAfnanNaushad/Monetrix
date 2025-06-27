@@ -1,19 +1,23 @@
+/* Reset and Base */
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  transition: all 0.2s ease-in-out;
+}
+
+body, button, input, select, textarea {
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 html, body, #root {
   height: 100%;
   min-height: 100vh;
-  background: url("/public/Monetrixbg1.png") no-repeat center center fixed;
+  background: url("/public/Monetrixbg1.png") no-repeat center center;
   background-size: cover;
   overflow-x: hidden;
-  background-attachment: fixed;
 }
 
+/* Content Scroll */
 .content {
   height: 100%;
   overflow-y: auto;
@@ -71,7 +75,6 @@ html, body, #root {
   border-radius: 10px;
   margin-bottom: 18px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-  position: relative;
   z-index: 2;
 }
 
@@ -102,7 +105,7 @@ html, body, #root {
   border-radius: 6px;
 }
 
-/* Table and Content */
+/* Table */
 .responsive-content {
   margin-top: 20px;
 }
@@ -110,7 +113,7 @@ html, body, #root {
   overflow-x: auto;
 }
 
-/* Ant Design Table Customizations */
+/* Ant Design Table Styling */
 .ant-table-cell .anticon-edit {
   color: #28a745 !important;
   font-size: 16px;
@@ -147,31 +150,17 @@ html, body, #root {
   margin: 0 auto;
 }
 
-/* Ant Design Select Customization */
+/* Ant Design Select Fixes */
+.ant-select-dropdown,
+.ant-picker-dropdown {
+  z-index: 3000 !important;
+}
+
 .ant-select-selector {
   background-color: #185495;
   color: #f9f1f1;
   border: 1px solid #ccc;
-}
-
-/* Remove all custom dropdown styles to prevent flicker */
-/*
-.ant-select-item-option,
-.ant-select-item-option:hover,
-.ant-select-item-option-selected,
-.ant-select-dropdown,
-.ant-select-dropdown-menu,
-.ant-select-dropdown-menu-item,
-.ant-select-dropdown-menu-item:hover,
-.ant-select-dropdown-menu-item-selected {
-  all: unset;
-}
-*/
-
-/* Ensure dropdowns are always visible and not flickering */
-.ant-select-dropdown,
-.ant-picker-dropdown {
-  z-index: 2000 !important;
+  transition: none !important; /* Avoid flicker */
 }
 
 /* Hide scrollbars for a cleaner look */
@@ -184,7 +173,7 @@ body::-webkit-scrollbar-thumb {
   border-radius: 4px;
 }
 
-/* Card and View Transaction */
+/* Card Styling */
 .card {
   margin-bottom: 20px;
   border-radius: 8px;
@@ -207,6 +196,8 @@ body::-webkit-scrollbar-thumb {
 .progress-bar { background-color: #1890ff; }
 .text-success { color: #28a745 !important; }
 .text-danger { color: #dc3545 !important; }
+
+/* Logos */
 .logo {
   height: 50px;
   left: 10rem;
@@ -222,6 +213,8 @@ body::-webkit-scrollbar-thumb {
   width: 45px;
   left: -7rem;
 }
+
+/* View Transaction */
 .view-transaction-card {
   background-color: #f9f9f9;
   border-radius: 10px;
@@ -252,7 +245,7 @@ body::-webkit-scrollbar-thumb {
   color: #e6f7ff;
 }
 
-/* Responsive Styles */
+/* Responsive */
 @media (max-width: 900px) {
   .responsive-filters, .filters {
     flex-direction: column;

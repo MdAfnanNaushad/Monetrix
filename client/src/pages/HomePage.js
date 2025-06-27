@@ -3,8 +3,23 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import Layout from '../components/layouts/Layout';
 import moment from 'moment';
-import { Card, Modal, Form, Input, Select, message, Table, DatePicker } from 'antd';
-import { EditOutlined, DeleteOutlined, UnorderedListOutlined, AreaChartOutlined, EyeOutlined } from '@ant-design/icons';
+import {
+  Card,
+  Modal,
+  Form,
+  Input,
+  Select,
+  message,
+  Table,
+  DatePicker,
+} from 'antd';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  UnorderedListOutlined,
+  AreaChartOutlined,
+  EyeOutlined,
+} from '@ant-design/icons';
 import Spinner from '../components/Spinner';
 import Analytics from '../components/Analytics';
 
@@ -21,7 +36,7 @@ const HomePage = () => {
   const [viewData, setViewData] = useState('table');
   const [viewTransaction, setViewTransaction] = useState(null);
   const [editable, setEditable] = useState(null);
-  const [showViewModal, setshowViewModal] = useState(false)
+  const [showViewModal, setshowViewModal] = useState(false);
   const hasFetched = useRef(false);
   const API_URL = process.env.REACT_APP_API_URL || "https://monetrix.onrender.com/api/v1";
 
@@ -40,10 +55,9 @@ const HomePage = () => {
         type: type.toLowerCase(),
       };
 
-      console.log("Request Payload:", payload); // Debugging
-
       const res = await axios.post(
-        `${API_URL}/transactions/get-transactions`, payload,
+        `${API_URL}/transactions/get-transactions`,
+        payload,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -56,19 +70,16 @@ const HomePage = () => {
     }
   };
 
-  // Fetch transactions
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
     fetchTransactions();
-  },);
+  }, []);
 
   useEffect(() => {
     fetchTransactions();
   }, [frequency, selectedDate, type]);
 
-
-  // Delete transaction
   const handleDelete = async (record) => {
     try {
       setLoading(true);
@@ -102,7 +113,6 @@ const HomePage = () => {
     }
   };
 
-  // Add/Edit transaction
   const handleSubmit = async (values) => {
     try {
       const token = localStorage.getItem("token");
@@ -143,13 +153,9 @@ const HomePage = () => {
 
         setShowModal(false);
         setEditable(null);
-
-
         await fetchTransactions();
-      }
-
-      else {
-        message.success("Please Reload to view  transaction");
+      } else {
+        message.success("Please Reload to view transaction");
       }
 
       setLoading(false);
@@ -164,7 +170,6 @@ const HomePage = () => {
     setshowViewModal(true);
   };
 
-  // Table columns
   const columns = [
     {
       title: 'Date',
@@ -208,6 +213,7 @@ const HomePage = () => {
             className="Options responsive-select"
             value={frequency}
             onChange={(values) => setFrequency(values)}
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
           >
             <Select.Option value="7">Last Week</Select.Option>
             <Select.Option value="30">Last Month</Select.Option>
@@ -219,6 +225,7 @@ const HomePage = () => {
               className="responsive-range-picker"
               value={selectedDate}
               onChange={(values) => setSelectedDate(values)}
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
             />
           )}
         </div>
@@ -228,27 +235,20 @@ const HomePage = () => {
             className="Options responsive-select"
             value={type}
             onChange={(values) => setType(values.toLowerCase())}
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
           >
-            <Select.Option className="list" value="all">
-              All
-            </Select.Option>
-            <Select.Option className="list" value="income">
-              Income
-            </Select.Option>
-            <Select.Option className="list" value="expense">
-              Expense
-            </Select.Option>
+            <Select.Option className="list" value="all">All</Select.Option>
+            <Select.Option className="list" value="income">Income</Select.Option>
+            <Select.Option className="list" value="expense">Expense</Select.Option>
           </Select>
         </div>
         <div className="switch-icons responsive-icons">
           <UnorderedListOutlined
-            className={`mx-2 ${viewData === "table" ? "active-icon" : "inactive-icon"
-              }`}
+            className={`mx-2 ${viewData === "table" ? "active-icon" : "inactive-icon"}`}
             onClick={() => setViewData("table")}
           />
           <AreaChartOutlined
-            className={`mx-2 ${viewData === "analytics" ? "active-icon" : "inactive-icon"
-              }`}
+            className={`mx-2 ${viewData === "analytics" ? "active-icon" : "inactive-icon"}`}
             onClick={() => setViewData("analytics")}
           />
         </div>
@@ -284,12 +284,26 @@ const HomePage = () => {
         }}
         footer={false}
       >
-        <Form key={editable ? editable._id : 'new'} layout='vertical' onFinish={handleSubmit} initialValues={editable ? editable : { type: 'income', amount: '', category: '', date: '', description: '' }}>
+        <Form
+          key={editable ? editable._id : 'new'}
+          layout='vertical'
+          onFinish={handleSubmit}
+          initialValues={editable ? editable : {
+            type: 'income',
+            amount: '',
+            category: '',
+            date: '',
+            description: ''
+          }}
+        >
           <Form.Item label='Amount' name='amount' rules={[{ required: true }]}>
             <Input type='number' />
           </Form.Item>
-          <Form.Item label='Type' name='type' rules={[{ required: true, message: 'Please select a type' }]}>
-            <Select className='Options'>
+          <Form.Item label='Type' name='type' rules={[{ required: true }]}>
+            <Select
+              className='Options'
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            >
               <Select.Option className='list' value='income'>Income</Select.Option>
               <Select.Option className='list' value='expense'>Expense</Select.Option>
             </Select>
@@ -310,6 +324,7 @@ const HomePage = () => {
           </div>
         </Form>
       </Modal>
+
       <Modal
         title="Details:"
         open={showViewModal}
@@ -326,7 +341,6 @@ const HomePage = () => {
           </Card>
         )}
       </Modal>
-
     </Layout>
   );
 };
