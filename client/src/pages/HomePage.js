@@ -255,7 +255,10 @@ const HomePage = () => {
         <div>
           <button
             className="btn btn-primary responsive-button"
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              setEditable(null);
+              setShowModal(true);
+            }}
           >
             Add New
           </button>
@@ -285,8 +288,7 @@ const HomePage = () => {
           <Form.Item label='Amount' name='amount' rules={[{ required: true }]}>
             <Input type='number' />
           </Form.Item>
-          <Form.Item label='Type' name='type' >
-            {/* rules={[{ required: true }]} */}
+          <Form.Item label='Type' name='type' rules={[{ required: true, message: 'Please select a type' }]}>
             <Select className='Options'>
               <Select.Option className='list' value='income'>Income</Select.Option>
               <Select.Option className='list' value='expense'>Expense</Select.Option>
