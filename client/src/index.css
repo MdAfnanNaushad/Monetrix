@@ -155,7 +155,8 @@ body {
   border: 1px solid #ccc;
 }
 
-/* .ant-select-item-option {
+/* 
+.ant-select-item-option {
   background-color: #fff;
   color: #333;
 }
@@ -197,7 +198,9 @@ body {
 .ant-select-dropdown-menu-item-selected {
   background-color: #003f61;
   color: #1890ff;
-} */
+} 
+*/
+
 .ant-table-row {
   background: rgb(49, 108, 203);
   font-family: serif;
