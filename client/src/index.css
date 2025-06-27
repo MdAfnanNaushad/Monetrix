@@ -5,202 +5,129 @@
   transition: all 0.2s ease-in-out;
 }
 
+html, body, #root {
+  height: 100%;
+  min-height: 100vh;
+  background: url("/public/Monetrixbg1.png") no-repeat center center fixed;
+  background-size: cover;
+  overflow-x: hidden;
+  background-attachment: fixed;
+}
+
 .content {
   height: 100%;
-  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-y: auto;
 }
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: auto; /* Allow scrolling */
+/* Monetrix Title */
+.monetrix-title {
+  font-size: 3.2rem;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+  text-shadow: 2px 2px 8px #003f61;
 }
 
-/* transection page */
-.filters {
+/* Logo */
+.responsive-logo {
+  max-width: 140px;
+  height: auto;
+  display: block;
+  margin: 0 auto 24px auto;
+}
+
+/* Logout Button */
+.logout-btn, .logbtn {
+  position: fixed;
+  top: 18px;
+  right: 24px;
+  z-index: 1001;
+  padding: 6px 18px;
+  font-size: 1rem;
+  border-radius: 20px;
+  background: #185495;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.logout-btn:hover, .logbtn:hover {
+  background: #dc3545;
+  color: #fff;
+}
+
+/* Filters Bar */
+.responsive-filters, .filters {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 25px; /* Increased padding for better spacing */
-  gap: 15px; /* Added gap between child elements */
-  box-shadow: 0 0 5px rgb(32, 59, 147); /* Slightly increased shadow for better visibility */
-  margin-bottom: 15px; /* Increased margin for better separation */
-  background-color: transparent;
-  color: rgb(255, 255, 255);
+  gap: 16px;
+  padding: 18px 20px;
+  background: rgba(24, 84, 149, 0.85);
+  border-radius: 10px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  position: relative;
+  z-index: 2;
 }
 
-/* Switching to Analytics part */
-.switch-analytics {
+.responsive-filters > div, .filters > div {
+  flex: 1 1 0;
+  min-width: 120px;
+}
+
+.responsive-select,
+.responsive-range-picker {
+  width: 100%;
+  min-width: 100px;
+}
+
+.responsive-icons, .switch-icons {
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 10px 20px;
-  margin: 15px 0;
-  background-color: #185495;
-  color: white;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  align-items: center;
+  gap: 8px;
 }
 
-.switch-analytics:hover {
-  background-color: #003f61;
+.responsive-button {
+  width: 100%;
+  min-width: 100px;
+  margin-top: 0;
+  padding: 7px 0;
+  font-size: 1rem;
+  border-radius: 6px;
 }
 
-/* Icons: Edit, Delete, View */
-.icon-container {
-  display: flex;
-  gap: 10px; /* Added spacing between icons */
+/* Table and Content */
+.responsive-content {
+  margin-top: 20px;
+}
+.responsive-table {
+  overflow-x: auto;
 }
 
-.icon-container .icon {
-  font-size: 18px; /* Ensure icons are visible */
-  margin: 0 5px; /* Add spacing between icons */
-  transition: color 0.3s ease, transform 0.2s ease;
-}
-
-.icon-container .icon:hover {
-  transform: scale(1.1); /* Slight zoom effect on hover */
-}
-
-.icon-container .edit-icon {
-  color: #28a745 !important; /* Ensure green for edit is visible */
-}
-
-.icon-container .delete-icon {
-  color: #dc3545 !important; /* Ensure red for delete is visible */
-}
-
-.icon-container .view-icon {
-  color: #1890ff !important; /* Ensure blue for view is visible */
-}
-
+/* Ant Design Table Customizations */
 .ant-table-cell .anticon-edit {
-  color: #28a745 !important; /* Green for edit */
+  color: #28a745 !important;
   font-size: 16px;
   cursor: pointer;
 }
-
 .ant-table-cell .anticon-delete {
-  color: #dc3545 !important; /* Red for delete */
+  color: #dc3545 !important;
   font-size: 16px;
   cursor: pointer;
 }
-
 .ant-table-cell .anticon-eye {
-  color: #1890ff !important; /* Blue for view */
+  color: #1890ff !important;
   font-size: 16px;
   cursor: pointer;
 }
-
-.ant-table-cell.amount-column {
-  width: 10%;
-}
-
-.ant-table-cell.category-column {
-  width: 15%;
-}
-
-.switch-icons {
-  border: 2px solid rgb(3, 191, 254);
-  border-radius: 5px;
-  padding: 10px 15px;
-}
-
-.anticon svg {
-  font-size: 20px;
-  cursor: pointer;
-  border: #53a4cf;
-}
-
-.active-icon {
-  color: rgb(36, 187, 242);
-}
-.inactive-icon {
-  color: rgb(241, 250, 253);
-}
-.footer {
-  position: relative;
-  top: 21rem;
-  background-color: transparent;
-}
-.navbar-brand {
-  position: relative;
-  right: 8%;
-  font-size: xx-large;
-  font-weight: bolder;
-  font-family: serif;
-  z-index: 1000;
-  color: #e6f7ff;
-}
-.logbtn {
-  position: absolute; /* Change to absolute for better control */
-  top: 20px; /* Adjust top position */
-  right: 20px; /* Move to the right corner */
-  z-index: 1000; /* Ensure it appears above other elements */
-}
-#root {
-  height: 100vh;
-  background: url("/public/Monetrixbg1.png") no-repeat center center fixed;
-  background-size: cover; /* Ensure the background image covers the entire screen */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-}
-
-.ant-select-selector {
-  background-color: #185495;
-  color: #f9f1f1;
-  border: 1px solid #ccc;
-}
-
-/* 
-.ant-select-item-option {
-  background-color: #fff;
-  color: #333;
-}
-.ant-select-item-option:hover {
-  background-color: #e6f7ff !important;
-  color: #1890ff !important;
-}
-
-.ant-select-item-option-selected {
-  background-color: #003f61 !important;
-  color: #1890ff !important;
-}
-
-.ant-select-dropdown {
-  background-color: rgb(13, 102, 198) !important;
-  color: white !important;
-  border: none !important;
-  padding: 0 !important;
-}
-
-.ant-select-dropdown-menu {
-  background-color: rgb(13, 102, 198);
-  color: white;
-  border: none;
-  padding: 0;
-}
-
-.ant-select-dropdown-menu-item {
-  background-color: rgb(13, 102, 198);
-  color: white;
-  padding: 8px 16px;
-}
-
-.ant-select-dropdown-menu-item:hover {
-  background-color: #e6f7ff;
-  color: #1890ff;
-}
-
-.ant-select-dropdown-menu-item-selected {
-  background-color: #003f61;
-  color: #1890ff;
-} 
-*/
-
+.ant-table-cell.amount-column { width: 10%; }
+.ant-table-cell.category-column { width: 15%; }
 .ant-table-row {
   background: rgb(49, 108, 203);
   font-family: serif;
@@ -215,180 +142,71 @@ body {
 .ant-table {
   background: #53a4cf;
   color: black;
-  width: 100%; /* Ensure the table spans the full width */
-  overflow-x: auto; /* Enable horizontal scrolling if necessary */
-  margin: 0 auto; /* Center the table */
-}
-.login-page {
-  background: url("/public/Monetrixbg1.png");
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.login-page .ant-form {
   width: 100%;
-  max-width: 400px;
-  padding: 20px;
-  background-color: rgb(15, 44, 81);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  border: 1px solid rgb(235, 215, 36);
+  overflow-x: auto;
+  margin: 0 auto;
 }
 
-.login-page h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #1890ff;
+/* Ant Design Select Customization */
+.ant-select-selector {
+  background-color: #185495;
+  color: #f9f1f1;
+  border: 1px solid #ccc;
 }
 
-.login-page .ant-form-item-label > label {
-  color: #fffcfc;
+/* Remove all custom dropdown styles to prevent flicker */
+/*
+.ant-select-item-option,
+.ant-select-item-option:hover,
+.ant-select-item-option-selected,
+.ant-select-dropdown,
+.ant-select-dropdown-menu,
+.ant-select-dropdown-menu-item,
+.ant-select-dropdown-menu-item:hover,
+.ant-select-dropdown-menu-item-selected {
+  all: unset;
+}
+*/
+
+/* Ensure dropdowns are always visible and not flickering */
+.ant-select-dropdown,
+.ant-picker-dropdown {
+  z-index: 2000 !important;
 }
 
-.login-page .ant-input {
-  height: 40px;
+/* Hide scrollbars for a cleaner look */
+body::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+body::-webkit-scrollbar-thumb {
+  background: #185495;
   border-radius: 4px;
 }
 
-.login-page .btn-primary {
-  width: 100%;
-  height: 40px;
-  background-color: #1890ff;
-  border-color: #1890ff;
-  color: white;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.login-page .btn-primary:hover {
-  background-color: #40a9ff;
-  border-color: #e2ff08;
-}
-
-.login-page .d-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.login-page .d-flex a {
-  color: #1890ff;
-}
-
-.login-page .d-flex a:hover {
-  text-decoration: underline;
-}
-
-.register-page {
-  background: url("/public/Monetrixbg1.png") no-repeat center center fixed;
-  background-size: cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.register-page .ant-form {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
-  background-color: rgb(15, 44, 81);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  border: 2px solid gold;
-  margin-top: 5rem;
-}
-
-.register-page h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #1890ff;
-}
-
-.register-page .ant-form-item-label > label {
-  color: #ffffff;
-}
-
-.register-page .ant-input {
-  height: 40px;
-  border-radius: 4px;
-}
-
-.register-page .btn-primary {
-  width: 100%;
-  height: 40px;
-  background-color: #1890ff;
-  border-color: #1890ff;
-  color: white;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.register-page .btn-primary:hover {
-  background-color: #40a9ff;
-  border-color: #40a9ff;
-}
-
-.register-page .d-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.register-page .d-flex a {
-  color: #1890ff;
-}
-
-.register-page .d-flex a:hover {
-  text-decoration: underline;
-}
-.title {
-  position: relative;
-  bottom: 12.5rem;
-  left: 17rem;
-  font-family: serif;
-  color: white !important;
-  font-weight: bolder;
-}
-
+/* Card and View Transaction */
 .card {
   margin-bottom: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 .card-header {
   background-color: #1890ff;
   color: white;
   font-weight: bold;
   text-align: center;
 }
-
 .card-body {
   background-color: #f9f9f9;
 }
-
 .card-body h5 {
   margin-bottom: 10px;
   font-family: serif;
   font-weight: 600;
 }
-
-.progress-bar {
-  background-color: #1890ff;
-}
-
-.text-success {
-  color: #28a745 !important;
-}
-
-.text-danger {
-  color: #dc3545 !important;
-}
+.progress-bar { background-color: #1890ff; }
+.text-success { color: #28a745 !important; }
+.text-danger { color: #dc3545 !important; }
 .logo {
   height: 50px;
   left: 10rem;
@@ -401,11 +219,9 @@ body {
 }
 .logo2 {
   position: relative;
-  /* height: 39px; */
   width: 45px;
   left: -7rem;
 }
-
 .view-transaction-card {
   background-color: #f9f9f9;
   border-radius: 10px;
@@ -413,261 +229,99 @@ body {
   padding: 20px;
   margin: 20px 0;
 }
-
 .view-transaction-card p {
   margin: 10px 0;
   font-size: 16px;
   color: #333;
 }
+.view-transaction-card strong { color: #1890ff; }
 
-.view-transaction-card strong {
-  color: #1890ff;
+/* Footer and Navbar */
+.footer {
+  position: relative;
+  top: 21rem;
+  background-color: transparent;
+}
+.navbar-brand {
+  position: relative;
+  right: 8%;
+  font-size: 2.5rem;
+  font-weight: bolder;
+  font-family: serif;
+  z-index: 1000;
+  color: #e6f7ff;
 }
 
-@media screen and (max-width: 1080px) {
-  * {
-    transition: all 0.2s ease-in-out;
-  }
-  .content {
-    height: auto;
-    padding: 10px;
-  }
-
-  .filters {
+/* Responsive Styles */
+@media (max-width: 900px) {
+  .responsive-filters, .filters {
     flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px 8px;
   }
-
-  .navbar-brand {
-    font-size: large;
-    right: 5%;
+  .responsive-filters > div, .filters > div {
+    min-width: 0;
+    width: 100%;
   }
-
-  .logbtn {
-    left: 4rem;
+  .responsive-button {
+    width: 100%;
+    margin-top: 0;
   }
-
-  .title {
-    bottom: 10rem;
-    left: 10rem;
-    font-size: 1.2rem;
+  .responsive-icons, .switch-icons {
+    justify-content: flex-start;
+    margin-top: 0;
   }
-
-  .logo {
-    height: 40px;
-    bottom: 10rem;
-    left: 8rem;
+  .monetrix-title {
+    font-size: 2.2rem;
   }
-
-  .logo2 {
-    width: 35px;
-    left: -5rem;
+  .responsive-logo {
+    max-width: 90px;
+    margin-bottom: 10px;
   }
-
-  .login-page .ant-form,
-  .register-page .ant-form {
-    max-width: 280px;
-    padding: 15px;
-  }
-
-  .login-page h1,
-  .register-page h1 {
-    font-size: 1.5rem;
-  }
-
-  .card {
-    margin-bottom: 15px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-
-  .card-header {
-    font-size: 1rem;
-  }
-
-  .card-body h5 {
-    font-size: 0.9rem;
-  }
-
-  .view-transaction-card {
-    padding: 15px;
-    margin: 15px 0;
-  }
-
-  .view-transaction-card p {
-    font-size: 14px;
-  }
-
-  .icon-container .icon {
-    font-size: 20px; /* Adjust icon size for better visibility */
-  }
-
-  #root {
-    background-size: cover;
-    overflow-x: hidden;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ant-table {
-    width: 100%; /* Ensure the table adjusts to smaller screens */
-    overflow-x: auto; /* Prevent horizontal scrolling issues */
+  .logout-btn, .logbtn {
+    top: 10px;
+    right: 10px;
+    padding: 5px 12px;
+    font-size: 0.95rem;
   }
 }
 
-@media screen and (max-width: 720px) {
-  .filters {
+@media (max-width: 720px) {
+  .responsive-filters, .filters {
     padding: 5px;
     flex-direction: column;
     align-items: flex-start;
   }
-
   .navbar-brand {
     font-size: xx-large;
     right: -4%;
   }
-
-  .logbtn {
-    position: fixed; /* Ensure it stays visible on scroll */
-    top: 15px; /* Adjust top position */
-    right: 15px; /* Adjust right position */
-    z-index: 9999; /* Increase z-index to ensure visibility above all elements */
-    background-color: #185495; /* Add background for better visibility */
-    color: white; /* Ensure text is visible */
-    padding: 8px 12px; /* Add padding for better clickability */
-    border-radius: 5px; /* Add border radius for aesthetics */
+  .logout-btn, .logbtn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 9999;
+    background-color: #185495;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
   }
-
-  .title {
-    bottom: 12rem;
-    left: 16rem;
-    font-size: 1rem;
+  .monetrix-title {
+    font-size: 1.5rem;
   }
-
-  .logo {
+  .responsive-logo {
     height: 30px;
-    bottom: 12.5rem;
-    left: 9rem;
+    max-width: 60px;
+    margin-bottom: 8px;
   }
-
-  .logo2 {
-    position: relative;
-    height: 40px;
-    width: 40px;
-    left: 4rem;
-    margin-left: 35px;
-  }
-
-  .login-page,
-  .register-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height */
-    padding: 10px; /* Prevent content from touching screen edges */
-    box-sizing: border-box; /* Include padding in total width/height */
-  }
-
-  .login-page .ant-form,
-  .register-page .ant-form {
-    width: 100%; /* Use full width of the screen */
-    max-width: 320px; /* Limit the form width */
-    padding: 15px; /* Add padding for better spacing */
-    border-radius: 6px; /* Slightly reduce border radius */
-    background-color: rgb(
-      15,
-      44,
-      81
-    ); /* Ensure background color is consistent */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
-    border: 1px solid rgb(235, 215, 36); /* Add border for better visibility */
-    position: relative;
-    left: 10px;
-    max-width: 329px;
-    padding: 19px;
-  }
-
-  .login-page h1 {
-    font-size: 2.4rem; /* Adjust font size for better readability */
-    margin-bottom: 15px; /* Reduce margin for better spacing */
-  }
-
-  .login-page .btn-primary,
-  .register-page .btn-primary {
-    height: 36px; /* Adjust button height */
-    font-size: 14px; /* Adjust font size for buttons */
-    padding: 0 10px; /* Add padding for better clickability */
-    width: 100%; /* Ensure buttons span the full width */
-    background-color: #1890ff; /* Consistent button color */
-    border-color: #1890ff; /* Consistent border color */
-    color: white; /* Ensure text is visible */
-    border-radius: 4px; /* Keep buttons rounded */
-  }
-
-  .login-page .btn-primary:hover,
-  .register-page .btn-primary:hover {
-    background-color: #40a9ff; /* Change color on hover */
-    border-color: #40a9ff; /* Change border color on hover */
-  }
-
-  .login-page .d-flex,
-  .register-page .d-flex {
-    flex-direction: column; /* Stack elements vertically */
-    align-items: flex-start; /* Align items to the start */
-    gap: 10px; /* Add spacing between elements */
-  }
-
-  .login-page .d-flex a {
-    font-size: 14px; /* Adjust font size for links */
-  }
-
-  .login-page h1,
-  .register-page h1 {
-    font-size: 1.8rem; /* Adjust font size for better readability */
-    margin-bottom: 15px; /* Reduce margin for better spacing */
-    text-align: center; /* Center the heading */
-    color: #1890ff; /* Ensure consistent color */
-  }
-
-  .card-header {
-    font-size: 0.9rem;
-  }
-
-  .card-body h5 {
-    font-size: 0.8rem;
-  }
-
-  .view-transaction-card {
-    padding: 10px;
-    margin: 10px 0;
-  }
-
-  .view-transaction-card p {
-    font-size: 12px;
-  }
-
-  .filters responsive-filters > h6 {
-    padding: 20px;
-  }
-
-  .icon-container .icon {
-    font-size: 16px; /* Further adjust icon size for smaller screens */
-  }
-
-  .ant-table-cell {
-    padding-left: 5px !important; /* Reduce left padding */
-    padding-right: 5px !important; /* Reduce right padding */
-    font-size: 12px; /* Adjust font size for better fit */
+  .responsive-button {
+    width: 100%;
   }
   .responsive-table {
     font-size: 12px;
   }
-
-  .responsive-button {
-    width: 100%;
-  }
-  *{
-    transition: all 0.2s ease-in-out;
+  .responsive-content {
+    margin-top: 10px;
   }
 }

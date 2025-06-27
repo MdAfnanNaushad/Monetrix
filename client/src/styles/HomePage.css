@@ -1,31 +1,93 @@
 /* General styles for responsiveness */
 .responsive-logo {
-  max-width: 100%;
+  max-width: 120px;
   height: auto;
+  display: block;
+  margin: 0 auto 20px auto;
 }
 
+.monetrix-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 8px #003f61;
+}
+
+body, #root {
+  min-height: 100vh;
+  background: url("/public/Monetrixbg1.png") no-repeat center center fixed;
+  background-size: cover;
+  overflow-x: hidden;
+}
+
+/* Logout button styling */
+.logout-btn {
+  position: fixed;
+  top: 18px;
+  right: 24px;
+  z-index: 1001;
+  padding: 6px 16px;
+  font-size: 1rem;
+  border-radius: 20px;
+  background: #185495;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.logout-btn:hover {
+  background: #dc3545;
+  color: #fff;
+}
+
+/* Filters bar */
 .responsive-filters {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  background: rgba(24, 84, 149, 0.85);
+  border-radius: 10px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  position: relative;
+  z-index: 2;
+}
+
+.responsive-filters > div {
+  flex: 1 1 0;
+  min-width: 120px;
 }
 
 .responsive-select,
 .responsive-range-picker {
   width: 100%;
+  min-width: 100px;
 }
 
 .responsive-icons {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  align-items: center;
+  gap: 8px;
 }
 
 .responsive-button {
   width: 100%;
-  margin-top: 10px;
+  min-width: 100px;
+  margin-top: 0;
+  padding: 7px 0;
+  font-size: 1rem;
+  border-radius: 6px;
 }
 
+/* Content area */
 .responsive-content {
   margin-top: 20px;
 }
@@ -34,18 +96,63 @@
   overflow-x: auto;
 }
 
-/* Media query for Realme Narzo N55 (1080px width) */
-@media (max-width: 1080px) {
+/* Mobile styles */
+@media (max-width: 900px) {
   .responsive-filters {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
+    padding: 12px 8px;
   }
-
-  .responsive-icons {
-    justify-content: space-around;
+  .responsive-filters > div {
+    min-width: 0;
+    width: 100%;
   }
-
   .responsive-button {
-    margin: 0 auto;
+    width: 100%;
+    margin-top: 0;
   }
+  .responsive-icons {
+    justify-content: flex-start;
+    margin-top: 0;
+  }
+  .monetrix-title {
+    font-size: 2rem;
+  }
+  .responsive-logo {
+    max-width: 90px;
+    margin-bottom: 10px;
+  }
+  .logout-btn {
+    top: 10px;
+    right: 10px;
+    padding: 5px 12px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Prevent background image from resizing on scroll */
+html, body, #root {
+  height: 100%;
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Ensure filters dropdowns are always visible and not flickering */
+.ant-select-dropdown,
+.ant-picker-dropdown {
+  z-index: 2000 !important;
+}
+
+/* Hide scrollbars for a cleaner look */
+body::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+body::-webkit-scrollbar-thumb {
+  background: #185495;
+  border-radius: 4px;
 }
