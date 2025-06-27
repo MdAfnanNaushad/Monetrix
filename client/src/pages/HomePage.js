@@ -16,7 +16,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [allTransaction, setAllTransaction] = useState([]);
   const [frequency, setFrequency] = useState('7');
-  const [selectedDate, setSelectedDate] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [type, setType] = useState('all');
   const [viewData, setViewData] = useState('table');
   const [viewTransaction, setViewTransaction] = useState(null);
@@ -34,7 +34,9 @@ const HomePage = () => {
       }
       const payload = {
         frequency,
-        selectedDate: frequency === 'custom' ? selectedDate.map(date => moment(date).toISOString()) : [],
+        selectedDate: frequency === 'custom' && selectedDate
+          ? selectedDate.map(date => moment(date).toISOString())
+          : [],
         type: type.toLowerCase(),
       };
 
@@ -59,7 +61,7 @@ const HomePage = () => {
     if (hasFetched.current) return;
     hasFetched.current = true;
     fetchTransactions();
-  }, );
+  },);
 
   useEffect(() => {
     fetchTransactions();
@@ -240,15 +242,13 @@ const HomePage = () => {
         </div>
         <div className="switch-icons responsive-icons">
           <UnorderedListOutlined
-            className={`mx-2 ${
-              viewData === "table" ? "active-icon" : "inactive-icon"
-            }`}
+            className={`mx-2 ${viewData === "table" ? "active-icon" : "inactive-icon"
+              }`}
             onClick={() => setViewData("table")}
           />
           <AreaChartOutlined
-            className={`mx-2 ${
-              viewData === "analytics" ? "active-icon" : "inactive-icon"
-            }`}
+            className={`mx-2 ${viewData === "analytics" ? "active-icon" : "inactive-icon"
+              }`}
             onClick={() => setViewData("analytics")}
           />
         </div>
@@ -285,7 +285,7 @@ const HomePage = () => {
           <Form.Item label='Amount' name='amount' rules={[{ required: true }]}>
             <Input type='number' />
           </Form.Item>
-          <Form.Item label='Type' name='type' > 
+          <Form.Item label='Type' name='type' >
             {/* rules={[{ required: true }]} */}
             <Select className='Options'>
               <Select.Option className='list' value='income'>Income</Select.Option>
