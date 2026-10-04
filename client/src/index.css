@@ -1,320 +1,76 @@
-/* Reset and Base */
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-body, button, input, select, textarea {
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-html, body, #root {
-  height: 100%;
-  min-height: 100vh;
-  background: url("/public/Monetrixbg1.png") no-repeat center center;
-  background-size: cover;
-  overflow-x: hidden;
-}
-
-/* Content Scroll */
-.content {
-  height: 100%;
-  overflow-y: auto;
-}
-
-/* Monetrix Title */
-.monetrix-title {
-  font-size: 3.2rem;
-  font-weight: bold;
-  color: #fff;
-  text-align: center;
-  letter-spacing: 2px;
-  margin-bottom: 18px;
-  text-shadow: 2px 2px 8px #003f61;
-}
-
-/* Logo */
-.responsive-logo {
-  max-width: 140px;
-  height: auto;
-  display: block;
-  margin: 0 auto 24px auto;
-}
-
-/* Logout Button */
-.logout-btn, .logbtn {
-  position: fixed;
-  top: 18px;
-  right: 24px;
-  z-index: 1001;
-  padding: 6px 18px;
-  font-size: 1rem;
-  border-radius: 20px;
-  background: #185495;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-.logout-btn:hover, .logbtn:hover {
-  background: #dc3545;
-  color: #fff;
-}
-
-/* Filters Bar */
-.responsive-filters, .filters {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 18px 20px;
-  background: rgba(24, 84, 149, 0.85);
-  border-radius: 10px;
-  margin-bottom: 18px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-  z-index: 2;
-}
-
-.responsive-filters > div, .filters > div {
-  flex: 1 1 0;
-  min-width: 120px;
-}
-
-.responsive-select,
-.responsive-range-picker {
-  width: 100%;
-  min-width: 100px;
-}
-
-.responsive-icons, .switch-icons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
-
-.responsive-button {
-  width: 100%;
-  min-width: 100px;
-  margin-top: 0;
-  padding: 7px 0;
-  font-size: 1rem;
-  border-radius: 6px;
-}
-
-/* Table */
-.responsive-content {
-  margin-top: 20px;
-}
-.responsive-table {
-  overflow-x: auto;
-}
-
-/* Ant Design Table Styling */
-.ant-table-cell .anticon-edit {
-  color: #28a745 !important;
-  font-size: 16px;
-  cursor: pointer;
-}
-.ant-table-cell .anticon-delete {
-  color: #dc3545 !important;
-  font-size: 16px;
-  cursor: pointer;
-}
-.ant-table-cell .anticon-eye {
-  color: #1890ff !important;
-  font-size: 16px;
-  cursor: pointer;
-}
-.ant-table-cell.amount-column { width: 10%; }
-.ant-table-cell.category-column { width: 15%; }
-.ant-table-row {
-  background: rgb(49, 108, 203);
-  font-family: serif;
-  font-weight: bold;
-  color: white;
-}
-.ant-table-row:hover {
-  background: #185495;
-  color: black;
-  font-weight: bolder;
-}
-.ant-table {
-  background: #53a4cf;
-  color: black;
-  width: 100%;
-  overflow-x: auto;
-  margin: 0 auto;
-}
-
-/* Ant Design Select Fixes */
-.ant-select-dropdown,
-.ant-picker-dropdown {
-  z-index: 3000 !important;
-}
-
-.ant-select-selector {
-  background-color: #185495;
-  color: #f9f1f1;
-  border: 1px solid #ccc;
-  transition: none !important; /* Avoid flicker */
-}
-
-/* Hide scrollbars for a cleaner look */
-body::-webkit-scrollbar {
-  width: 8px;
-  background: transparent;
-}
-body::-webkit-scrollbar-thumb {
-  background: #185495;
-  border-radius: 4px;
-}
-
-/* Card Styling */
-.card {
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.card-header {
-  background-color: #1890ff;
-  color: white;
-  font-weight: bold;
-  text-align: center;
-}
-.card-body {
-  background-color: #f9f9f9;
-}
-.card-body h5 {
-  margin-bottom: 10px;
-  font-family: serif;
-  font-weight: 600;
-}
-.progress-bar { background-color: #1890ff; }
-.text-success { color: #28a745 !important; }
-.text-danger { color: #dc3545 !important; }
-
-/* Logos */
-.logo {
-  height: 50px;
-  left: 10rem;
-  bottom: 13rem;
-  position: relative;
-  display: block;
-  margin: 0 -103px;
-  max-width: 68px;
-  border-radius: 50%;
-}
-.logo2 {
-  position: relative;
-  width: 45px;
-  left: -7rem;
-}
-
-/* View Transaction */
-.view-transaction-card {
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin: 20px 0;
-}
-.view-transaction-card p {
-  margin: 10px 0;
-  font-size: 16px;
-  color: #333;
-}
-.view-transaction-card strong { color: #1890ff; }
-
-/* Footer and Navbar */
-.footer {
-  position: relative;
-  top: 21rem;
-  background-color: transparent;
-}
-.navbar-brand {
-  position: relative;
-  right: 8%;
-  font-size: 2.5rem;
-  font-weight: bolder;
-  font-family: serif;
-  z-index: 1000;
-  color: #e6f7ff;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .responsive-filters, .filters {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-    padding: 12px 8px;
+@layer base {
+  * {
+    border-color: theme('colors.slate.200');
   }
-  .responsive-filters > div, .filters > div {
-    min-width: 0;
-    width: 100%;
+  .dark * {
+    border-color: theme('colors.slate.800');
   }
-  .responsive-button {
-    width: 100%;
-    margin-top: 0;
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
-  .responsive-icons, .switch-icons {
-    justify-content: flex-start;
-    margin-top: 0;
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
-  .monetrix-title {
-    font-size: 2.2rem;
+  ::-webkit-scrollbar-track {
+    background: transparent;
   }
-  .responsive-logo {
-    max-width: 90px;
-    margin-bottom: 10px;
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+    border-radius: 9999px;
   }
-  .logout-btn, .logbtn {
-    top: 10px;
-    right: 10px;
-    padding: 5px 12px;
-    font-size: 0.95rem;
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.5);
   }
 }
 
-@media (max-width: 720px) {
-  .responsive-filters, .filters {
-    padding: 5px;
-    flex-direction: column;
-    align-items: flex-start;
+/* Glassmorphism and animations */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-dropdown {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.dark .glass-dropdown {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
   }
-  .navbar-brand {
-    font-size: xx-large;
-    right: -4%;
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
   }
-  .logout-btn, .logbtn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 9999;
-    background-color: #185495;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-  }
-  .monetrix-title {
-    font-size: 1.5rem;
-  }
-  .responsive-logo {
-    height: 30px;
-    max-width: 60px;
-    margin-bottom: 8px;
-  }
-  .responsive-button {
-    width: 100%;
-  }
-  .responsive-table {
-    font-size: 12px;
-  }
-  .responsive-content {
-    margin-top: 10px;
-  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 6s ease-in-out infinite;
 }

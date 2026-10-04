@@ -1,14 +1,14 @@
 {
   "name": "monetrix",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "cd client && npm start",
+    "start": "node server/server.js",
+    "server": "nodemon server/server.js",
+    "client": "npm --prefix client start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "cd client && npm run build",
-    "postinstall": "cd client && npm install && npm run build"
+    "build": "npm --prefix client install && npm --prefix client run build",
+    "render-build": "npm install && npm --prefix client install && npm --prefix client run build"
   },
   "keywords": [],
   "author": "",

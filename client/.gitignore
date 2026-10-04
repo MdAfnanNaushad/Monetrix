@@ -1,25 +1,23 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.js
+
+# Environment variables
 .env
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-freepik-modern-linear-money-care-accounting-logo-202503081042289XZP.png
+# Testing
+/coverage
+
+# Production
+/build
+/dist
+
+# System
+.DS_Store
+*.log
+.vite/

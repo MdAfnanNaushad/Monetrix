@@ -85,12 +85,23 @@ const editTransaction = async (req, res) => {
 // Add a transaction
 const addTransaction = async (req, res) => {
   try {
-    const newTransaction = new transactionModel({ ...req.body, userid: req.userId });
-    await newTransaction.save();
-    res.status(201).json({ message: "Transaction Created" });
+    const userId = req.userId || (req.headers.authorization ? jwt.verify(req.headers.authorization.split(" ")[1], process.env.JWT_SECRET)?.userId : null);
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized: Invalid or missing token" });
+    }
+
+    const newTransaction = new transactionModel({
+      ...req.body,
+      userid: userId,
+      type: req.body.type ? req.body.type.toLowerCase().trim() : 'expense',
+      category: req.body.category ? req.body.category.toLowerCase().trim() : 'other',
+    });
+    const savedTransaction = await newTransaction.save();
+    console.log("Transaction successfully saved to database:", savedTransaction);
+    res.status(201).json({ message: "Transaction Created", transaction: savedTransaction });
   } catch (error) {
     console.error("Add Transaction Error:", error);
-    res.status(500).json({ message: "Server Error", error });
+    res.status(500).json({ message: "Server Error", error: error.message || error });
   }
 };
 
