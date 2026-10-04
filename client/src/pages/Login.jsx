@@ -46,7 +46,7 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const API_URL = import.meta.env.VITE_API_URL || 'https://monetrix.onrender.com/api/v1';
+      const API_URL = import.meta.env.VITE_API_URL || '/api/v1';
       const res = await axios.post(`${API_URL}/users/login`, formData, {
         headers: { 'Content-Type': 'application/json' },
       });

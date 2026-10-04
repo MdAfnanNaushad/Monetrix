@@ -73,7 +73,7 @@ const HomePage = () => {
     description: '',
   });
 
-  const API_URL = import.meta.env.VITE_API_URL || 'https://monetrix.onrender.com/api/v1';
+  const API_URL = import.meta.env.VITE_API_URL || '/api/v1';
 
   const fetchTransactions = async () => {
     try {
