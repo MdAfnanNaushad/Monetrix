@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Camera, X, Check, Loader2, User } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003/api/v1';
+const API_URL = import.meta.env.VITE_API_URL || '/api/v1';
 
 const ProfileModal = ({ isOpen, onClose, onUserUpdated }) => {
   const toast = useToast();
@@ -18,14 +18,25 @@ const ProfileModal = ({ isOpen, onClose, onUserUpdated }) => {
     }
   };
 
-  const user = getCurrentUser();
-  const [name, setName] = useState(user?.name || '');
-  const [previewUrl, setPreviewUrl] = useState(user?.profilePic || '');
+  const [name, setName] = useState('');
+  const [previewUrl, setPreviewUrl] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
+  // Sync state whenever modal is opened
+  React.useEffect(() => {
+    if (isOpen) {
+      const u = getCurrentUser();
+      setName(u?.name || '');
+      setPreviewUrl(u?.profilePic || '');
+      setSelectedFile(null);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
+
+  const user = getCurrentUser();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];

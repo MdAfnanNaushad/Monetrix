@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
 import { useToast } from '../../context/ToastContext';
 import {
@@ -153,63 +154,81 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu with animation & smooth touch ergonomics */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-3 pb-4 border-t border-slate-200 dark:border-slate-800 space-y-3 animate-fade-in">
-            {loginUser ? (
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 rounded-md bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
-                  <div className="w-9 h-9 rounded bg-emerald-600 flex items-center justify-center text-white font-bold text-sm shrink-0">
-                    {loginUser?.name ? loginUser.name.charAt(0).toUpperCase() : 'U'}
+        {/* Mobile Dropdown Menu with smooth sliding animation */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0, y: -10 }}
+              animate={{ height: 'auto', opacity: 1, y: 0 }}
+              exit={{ height: 0, opacity: 0, y: -10 }}
+              transition={{ duration: 0.28, ease: 'easeInOut' }}
+              className="md:hidden overflow-hidden border-t border-slate-200 dark:border-slate-800"
+            >
+              <div className="py-3.5 pb-4 space-y-3">
+                {loginUser ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-3 rounded-md bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+                      <div className="w-10 h-10 rounded-full bg-emerald-600 overflow-hidden flex items-center justify-center text-white font-bold text-sm shrink-0 border border-emerald-500/30">
+                        {loginUser?.profilePic ? (
+                          <img
+                            src={loginUser.profilePic}
+                            alt={loginUser.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span>{loginUser?.name ? loginUser.name.charAt(0).toUpperCase() : 'U'}</span>
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm truncate">{loginUser?.name || 'User'}</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 truncate">{loginUser?.email || 'Authenticated'}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setProfileModalOpen(true);
+                        }}
+                        className="flex-1 min-h-[44px] flex items-center justify-center gap-2 py-2.5 rounded-md text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-xs font-semibold active:scale-[0.99] transition-all"
+                      >
+                        <Settings className="w-4 h-4" />
+                        Edit Profile
+                      </button>
+                      <button
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          logoutHandler();
+                        }}
+                        className="flex-1 min-h-[44px] flex items-center justify-center gap-2 py-2.5 rounded-md text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/40 text-xs font-semibold active:scale-[0.99] transition-all"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                      </button>
+                    </div>
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm truncate">{loginUser?.name || 'User'}</div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400 truncate">{loginUser?.email || 'Authenticated'}</div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2.5 pt-1">
+                    <Link
+                      to="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="min-h-[44px] flex items-center justify-center text-xs font-bold rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 active:scale-[0.98] transition-all"
+                    >
+                      Sign in
+                    </Link>
+                    <Link
+                      to="/register"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="min-h-[44px] flex items-center justify-center text-xs font-bold rounded-md bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm active:scale-[0.98] transition-all"
+                    >
+                      Get Started
+                    </Link>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      setProfileModalOpen(true);
-                    }}
-                    className="flex-1 min-h-[44px] flex items-center justify-center gap-2 py-2.5 rounded-md text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-xs font-semibold active:scale-[0.99] transition-all"
-                  >
-                    <Settings className="w-4 h-4" />
-                    Edit Profile
-                  </button>
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      logoutHandler();
-                    }}
-                    className="flex-1 min-h-[44px] flex items-center justify-center gap-2 py-2.5 rounded-md text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/40 text-xs font-semibold active:scale-[0.99] transition-all"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Logout
-                  </button>
-                </div>
+                )}
               </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-2.5 pt-1">
-                <Link
-                  to="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="min-h-[44px] flex items-center justify-center text-xs font-bold rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 active:scale-[0.98] transition-all"
-                >
-                  Sign in
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="min-h-[44px] flex items-center justify-center text-xs font-bold rounded-md bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm active:scale-[0.98] transition-all"
-                >
-                  Get Started
-                </Link>
-              </div>
-            )}
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <ProfileModal
