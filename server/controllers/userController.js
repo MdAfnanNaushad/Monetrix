@@ -39,7 +39,8 @@ const loginUser = async (req, res) => {
       user: {
         _id: user._id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        profilePic: user.profilePic || "",
       }
     });
   } catch (error) {
@@ -47,4 +48,53 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error("Get Profile Error:", error);
+    res.status(500).json({ message: "Server error fetching profile" });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (name && name.trim()) {
+      user.name = name.trim();
+    }
+
+    // Handle avatar image upload via multer (req.file)
+    if (req.file) {
+      const { uploadToImageKit } = require("../utils/imagekit");
+      const imageUrl = await uploadToImageKit(req.file.buffer, req.file.originalname || "avatar.png");
+      user.profilePic = imageUrl;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        profilePic: user.profilePic || "",
+      },
+    });
+  } catch (error) {
+    console.error("Update Profile Error:", error);
+    res.status(500).json({ message: "Failed to update profile", error: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, getProfile, updateProfile };

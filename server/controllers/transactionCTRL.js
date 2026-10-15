@@ -36,10 +36,28 @@ const fetchTransactions = async (req, res) => {
 
     console.log("Applying Filter:", filter);
 
+    const page = Math.max(1, parseInt(req.body.page || req.query.page || 1, 10));
+    const limit = Math.max(1, parseInt(req.body.limit || req.query.limit || 0, 10));
 
-    const transactions = await transactionModel.find(filter).sort({ date: -1 });
+    let query = transactionModel.find(filter).sort({ date: -1 });
 
-    console.log("Fetched Transactions:", transactions); // Debugging  
+    if (limit > 0) {
+      const skip = (page - 1) * limit;
+      const total = await transactionModel.countDocuments(filter);
+      const transactions = await query.skip(skip).limit(limit);
+      const hasMore = skip + transactions.length < total;
+
+      return res.status(200).json({
+        transactions,
+        total,
+        page,
+        limit,
+        hasMore,
+      });
+    }
+
+    const transactions = await query;
+    console.log("Fetched Transactions:", transactions.length); // Debugging  
 
     res.status(200).json(transactions);
   } catch (error) {

@@ -4,9 +4,9 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const path = require('path');
 
-// Load environment variables from server root or project root
-dotenv.config({ path: path.join(__dirname, '../.env') });
+// Load environment variables (server folder first, then fallback to root)
 dotenv.config({ path: path.join(__dirname, '.env') });
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const connectDb = require('./config/connectDb');
 
