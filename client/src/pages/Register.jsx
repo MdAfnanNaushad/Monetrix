@@ -14,6 +14,7 @@ import {
   Sun,
   Moon,
   Sparkles,
+  ChevronDown,
 } from 'lucide-react';
 import CountUp from '../components/CountUp';
 
@@ -90,55 +91,80 @@ const Register = () => {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className="w-full lg:w-1/2 p-6 sm:p-10 lg:p-16 flex flex-col justify-between bg-slate-900 text-white relative overflow-hidden"
       >
-        <div className="flex items-center justify-between z-10 gap-3">
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shrink-0 transition-transform group-hover:scale-105">
+        {/* MOBILE-ONLY HERO (< lg screens): Centered large PNG logo, brief platform description, and animated scroll down indicator */}
+        <div className="block lg:hidden text-center py-6 sm:py-8 space-y-4 z-10">
+          <Link to="/" className="inline-flex flex-col items-center group">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mx-auto transition-transform active:scale-95">
               <img
                 src="/monetrix-logo.png"
                 alt="Monetrix Logo"
-                className="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(52,211,153,0.4)]"
+                className="w-full h-full object-contain filter drop-shadow-[0_8px_24px_rgba(52,211,153,0.45)]"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="text-xl sm:text-2xl font-black tracking-tight text-white leading-none">Monetrix</span>
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#00a8f2] mt-0.5">Finance in Focus</span>
-            </div>
+            <span className="text-2xl sm:text-3xl font-bold tracking-tight text-white mt-2">Monetrix</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#00a8f2]">Finance in Focus</span>
           </Link>
-        </div>
-
-        <div className="my-8 sm:my-10 lg:my-12 z-10 space-y-5 sm:space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.5 }}
-          >
-            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight">
-              Start Building Financial Freedom Today.
-            </h1>
-            <p className="mt-3 sm:mt-4 text-xs sm:text-sm lg:text-base text-slate-300 max-w-lg leading-relaxed font-normal">
-              Set up your profile, track monthly cashflow, generate custom tax reports, and gain complete visibility over every cent.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-2 sm:pt-4">
-            <div className="p-4 sm:p-5 rounded-md bg-slate-800 border border-slate-700 space-y-1">
-              <span className="text-[11px] sm:text-xs uppercase font-bold text-slate-400">Active Households</span>
-              <div className="text-xl sm:text-2xl font-black text-white font-mono">
-                <CountUp end={14200} prefix="+" decimals={0} />
-              </div>
-              <p className="text-[11px] sm:text-xs text-emerald-400">Growing weekly</p>
-            </div>
-            <div className="p-4 sm:p-5 rounded-md bg-slate-800 border border-slate-700 space-y-1">
-              <span className="text-[11px] sm:text-xs uppercase font-bold text-slate-400">Data Encryption</span>
-              <div className="text-xl sm:text-2xl font-black text-white font-mono">256-Bit</div>
-              <p className="text-[11px] sm:text-xs text-teal-400">Bank-grade protection</p>
-            </div>
+          <p className="text-xs sm:text-sm text-slate-300 max-w-xs mx-auto leading-relaxed">
+            Real-time cashflow intelligence, automated expense telemetry, and smart wealth tracking.
+          </p>
+          <div className="pt-2 flex flex-col items-center justify-center text-slate-400 gap-1 animate-bounce">
+            <span className="text-[11px] font-semibold text-emerald-400 tracking-wider uppercase">Scroll to register</span>
+            <ChevronDown className="w-4 h-4 text-emerald-400" />
           </div>
         </div>
 
-        <div className="z-10 flex items-center justify-between text-xs text-slate-400 pt-4 sm:pt-6 border-t border-slate-800">
-          <span>Monetrix Finance Engine</span>
-          <span>Zero Fees Required</span>
+        {/* DESKTOP / TABLET HERO (lg+ screens only): Full interactive showcase and telemetry preview */}
+        <div className="hidden lg:flex flex-col justify-between h-full z-10">
+          <div className="flex items-center justify-between gap-3">
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shrink-0 transition-transform group-hover:scale-105">
+                <img
+                  src="/monetrix-logo.png"
+                  alt="Monetrix Logo"
+                  className="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(52,211,153,0.4)]"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl sm:text-2xl font-bold tracking-tight text-white leading-none">Monetrix</span>
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#00a8f2] mt-0.5">Finance in Focus</span>
+              </div>
+            </Link>
+          </div>
+
+          <div className="my-8 sm:my-10 lg:my-12 space-y-5 sm:space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.5 }}
+            >
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight">
+                Start Building Financial Freedom Today.
+              </h1>
+              <p className="mt-3 sm:mt-4 text-xs sm:text-sm lg:text-base text-slate-300 max-w-lg leading-relaxed font-normal">
+                Set up your profile, track monthly cashflow, generate custom tax reports, and gain complete visibility over every cent.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-2 sm:pt-4">
+              <div className="p-4 sm:p-5 rounded-md bg-slate-800 border border-slate-700 space-y-1">
+                <span className="text-[11px] sm:text-xs uppercase font-bold text-slate-400">Active Households</span>
+                <div className="text-xl sm:text-2xl font-black text-white font-mono">
+                  <CountUp end={14200} prefix="+" decimals={0} />
+                </div>
+                <p className="text-[11px] sm:text-xs text-emerald-400">Growing weekly</p>
+              </div>
+              <div className="p-4 sm:p-5 rounded-md bg-slate-800 border border-slate-700 space-y-1">
+                <span className="text-[11px] sm:text-xs uppercase font-bold text-slate-400">Data Encryption</span>
+                <div className="text-xl sm:text-2xl font-black text-white font-mono">256-Bit</div>
+                <p className="text-[11px] sm:text-xs text-teal-400">Bank-grade protection</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between text-xs text-slate-400 pt-4 sm:pt-6 border-t border-slate-800">
+            <span>Monetrix Finance Engine</span>
+            <span>Zero Fees Required</span>
+          </div>
         </div>
       </motion.div>
 

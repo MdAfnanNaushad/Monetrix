@@ -57,7 +57,7 @@ const Header = () => {
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white leading-none">
+              <span className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white leading-none">
                 Monetrix
               </span>
               <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#00a8f2] mt-0.5">
