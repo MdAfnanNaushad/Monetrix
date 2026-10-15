@@ -25,7 +25,7 @@ const CountUp = ({ end = 0, duration = 1200, prefix = '', suffix = '', decimals 
     window.requestAnimationFrame(step);
   }, [end, duration]);
 
-  const formatted = value.toLocaleString('en-US', {
+  const formatted = value.toLocaleString('en-IN', {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   });

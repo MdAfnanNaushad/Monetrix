@@ -34,7 +34,7 @@ export const ToastProvider = ({ children }) => {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-center justify-between p-4 rounded-xl shadow-xl border backdrop-blur-lg transform transition-all duration-300 animate-slide-in ${
+            className={`pointer-events-auto flex items-center justify-between p-3.5 rounded-md shadow-xl border backdrop-blur-lg transform transition-all duration-300 animate-slide-in ${
               toast.type === 'success'
                 ? 'bg-emerald-900/90 text-emerald-100 border-emerald-500/40 shadow-emerald-950/40'
                 : toast.type === 'error'
@@ -50,7 +50,7 @@ export const ToastProvider = ({ children }) => {
             </div>
             <button
               onClick={() => removeToast(toast.id)}
-              className="ml-3 p-1 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
+              className="ml-3 p-1 rounded text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>

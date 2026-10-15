@@ -32,7 +32,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       boxShadow: {
         'glow-brand': '0 0 25px -5px rgba(16, 185, 129, 0.3)',
@@ -41,6 +42,11 @@ module.exports = {
       },
       backdropBlur: {
         xs: '2px',
+      },
+      borderRadius: {
+        DEFAULT: '6px',
+        md: '6px',
+        card: '6px',
       }
     },
   },

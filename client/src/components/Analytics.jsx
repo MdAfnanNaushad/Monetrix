@@ -1,22 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import moment from 'moment';
 import {
   TrendingUp,
   TrendingDown,
   Activity,
   DollarSign,
   PieChart as PieChartIcon,
-  BarChart3,
   Calendar,
   Layers,
 } from 'lucide-react';
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
   PieChart,
   Pie,
@@ -24,8 +18,13 @@ import {
   Legend,
   AreaChart,
   Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
 } from 'recharts';
 import CountUp from './CountUp';
+import TrendCard from './TrendCard';
 
 const PALETTE = ['#10b981', '#06b6d4', '#f59e0b', '#8b5cf6', '#ec4899', '#f43f5e', '#64748b', '#3b82f6'];
 
@@ -55,26 +54,27 @@ const Analytics = ({ allTransaction = [] }) => {
   const totalTurnover = totalIncomeTurnover + totalExpenseTurnover;
   const netSavings = totalIncomeTurnover - totalExpenseTurnover;
 
-  // Recharts Data Prep: Category Breakdown
-  const categoryData = categories
-    .map((cat) => {
-      const incomeAmt = incomeTransactions
-        .filter((t) => t.category?.toLowerCase() === cat)
-        .reduce((acc, t) => acc + Number(t.amount || 0), 0);
-      const expenseAmt = expenseTransactions
-        .filter((t) => t.category?.toLowerCase() === cat)
-        .reduce((acc, t) => acc + Number(t.amount || 0), 0);
+  // Area Chart Data Prep: Chronological Cashflow Trends
+  const timelineMap = {};
+  [...allTransaction]
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .forEach((txn) => {
+      const dateKey = moment(txn.date).format('MMM DD');
+      if (!timelineMap[dateKey]) {
+        timelineMap[dateKey] = { date: dateKey, Income: 0, Expense: 0, Net: 0 };
+      }
+      const amt = Number(txn.amount || 0);
+      if (txn.type === 'income') {
+        timelineMap[dateKey].Income += amt;
+      } else {
+        timelineMap[dateKey].Expense += amt;
+      }
+      timelineMap[dateKey].Net = timelineMap[dateKey].Income - timelineMap[dateKey].Expense;
+    });
 
-      return {
-        name: cat.charAt(0).toUpperCase() + cat.slice(1),
-        Income: incomeAmt,
-        Expense: expenseAmt,
-        Total: incomeAmt + expenseAmt,
-      };
-    })
-    .filter((c) => c.Total > 0);
+  const timelineData = Object.values(timelineMap);
 
-  // Expense Pie Data
+  // Expense Pie Data: Category Percentage
   const expensePieData = categories
     .map((cat) => {
       const amount = expenseTransactions
@@ -87,146 +87,106 @@ const Analytics = ({ allTransaction = [] }) => {
     })
     .filter((i) => i.value > 0);
 
-  // Velocity ratio summary
-  const velocityData = [
-    { name: 'Income', value: totalIncomeTurnover, fill: '#10b981' },
-    { name: 'Expense', value: totalExpenseTurnover, fill: '#ef4444' },
-  ];
-
   return (
-    <div className="space-y-8 animate-fade-in w-full">
-      {/* KPI METRIC CARDS with Framer-Motion & Counter-Up Animations */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-        {/* Net Savings */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          whileHover={{ y: -3 }}
-          className="p-6 rounded-md bg-white dark:bg-[#0e1626] border border-slate-200 dark:border-slate-800 shadow-sm"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Net Balance
-            </span>
-            <div className={`p-2 rounded-md ${netSavings >= 0 ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400' : 'bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400'}`}>
-              <DollarSign className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="text-3xl font-black font-mono text-slate-900 dark:text-white">
-            <CountUp end={netSavings} prefix="$" decimals={2} />
-          </div>
-          <p className="mt-2 text-xs text-slate-500 font-medium">
-            {netSavings >= 0 ? (
-              <span className="text-emerald-600 dark:text-emerald-400 font-bold">&uarr; Surplus Portfolio Margin</span>
-            ) : (
-              <span className="text-rose-600 dark:text-rose-400 font-bold">&darr; Deficit Alert</span>
-            )}
-          </p>
-        </motion.div>
+    <div className="space-y-8 animate-fade-in w-full font-sans">
+      {/* KPI METRIC CARDS with Animated Trend Graphs of Distinct Colors */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <TrendCard
+          title="Net Portfolio Balance"
+          icon={DollarSign}
+          amount={netSavings}
+          prefix="₹"
+          decimals={2}
+          badgeText={netSavings >= 0 ? "↗ Margin" : "↘ Deficit"}
+          badgeType={netSavings >= 0 ? "positive" : "negative"}
+          sparklineData={timelineData.map(d => ({ name: d.date, value: d.Net }))}
+          strokeColor="#f97316" // Orange
+          gradientId="analyticsNetGrad"
+          startDate={timelineData[0]?.date || "Start"}
+          endDate={timelineData[timelineData.length - 1]?.date || "Now"}
+          delay={0}
+        />
 
-        {/* Total Inflow */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          whileHover={{ y: -3 }}
-          className="p-6 rounded-md bg-white dark:bg-[#0e1626] border border-slate-200 dark:border-slate-800 shadow-sm"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Total Inflow
-            </span>
-            <div className="p-2 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
-              <TrendingUp className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="text-3xl font-black font-mono text-emerald-600 dark:text-emerald-400">
-            <CountUp end={totalIncomeTurnover} prefix="$" decimals={2} />
-          </div>
-          <div className="mt-2 text-xs text-slate-500 flex items-center justify-between">
-            <span>{incomeTxnCount} receipts</span>
-            <span className="font-bold text-emerald-600">
-              <CountUp end={totalTurnover > 0 ? (totalIncomeTurnover / totalTurnover) * 100 : 0} suffix="%" decimals={1} />
-            </span>
-          </div>
-        </motion.div>
+        <TrendCard
+          title="Total Inflow Receipts"
+          icon={TrendingUp}
+          amount={totalIncomeTurnover}
+          prefix="₹"
+          decimals={2}
+          badgeText="↗ Growth"
+          badgeType="positive"
+          sparklineData={timelineData.map(d => ({ name: d.date, value: d.Income }))}
+          strokeColor="#10b981" // Emerald
+          gradientId="analyticsInflowGrad"
+          startDate={timelineData[0]?.date || "Start"}
+          endDate={timelineData[timelineData.length - 1]?.date || "Now"}
+          delay={0.08}
+        />
 
-        {/* Total Outflow */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          whileHover={{ y: -3 }}
-          className="p-6 rounded-md bg-white dark:bg-[#0e1626] border border-slate-200 dark:border-slate-800 shadow-sm"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Total Expenses
-            </span>
-            <div className="p-2 rounded-md bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">
-              <TrendingDown className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="text-3xl font-black font-mono text-rose-600 dark:text-rose-400">
-            <CountUp end={totalExpenseTurnover} prefix="$" decimals={2} />
-          </div>
-          <div className="mt-2 text-xs text-slate-500 flex items-center justify-between">
-            <span>{expenseTxnCount} outflows</span>
-            <span className="font-bold text-rose-600">
-              <CountUp end={totalTurnover > 0 ? (totalExpenseTurnover / totalTurnover) * 100 : 0} suffix="%" decimals={1} />
-            </span>
-          </div>
-        </motion.div>
+        <TrendCard
+          title="Total Capital Outflow"
+          icon={TrendingDown}
+          amount={totalExpenseTurnover}
+          prefix="₹"
+          decimals={2}
+          badgeText="↘ Overhead"
+          badgeType="negative"
+          sparklineData={timelineData.map(d => ({ name: d.date, value: d.Expense }))}
+          strokeColor="#f43f5e" // Rose / Crimson
+          gradientId="analyticsExpenseGrad"
+          startDate={timelineData[0]?.date || "Start"}
+          endDate={timelineData[timelineData.length - 1]?.date || "Now"}
+          delay={0.16}
+        />
 
-        {/* Gross Volume */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-          whileHover={{ y: -3 }}
-          className="p-6 rounded-md bg-white dark:bg-[#0e1626] border border-slate-200 dark:border-slate-800 shadow-sm"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Gross Volume
-            </span>
-            <div className="p-2 rounded-md bg-cyan-100 dark:bg-cyan-950/60 text-cyan-600 dark:text-cyan-400">
-              <Activity className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="text-3xl font-black font-mono text-slate-900 dark:text-white">
-            <CountUp end={totalTurnover} prefix="$" decimals={2} />
-          </div>
-          <div className="mt-2 text-xs text-slate-500">
-            {totalTransaction} executed transactions
-          </div>
-        </motion.div>
+        <TrendCard
+          title="Gross Trading Volume"
+          icon={Activity}
+          amount={totalTurnover}
+          prefix="₹"
+          decimals={2}
+          badgeText="⚡ Active"
+          badgeType="neutral"
+          sparklineData={timelineData.map(d => ({ name: d.date, value: d.Income + d.Expense }))}
+          strokeColor="#06b6d4" // Cyan
+          gradientId="analyticsVolumeGrad"
+          startDate={timelineData[0]?.date || "Start"}
+          endDate={timelineData[timelineData.length - 1]?.date || "Now"}
+          delay={0.24}
+        />
       </div>
 
-      {/* RECHARTS ANIMATED VISUALIZATIONS */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Bar Chart: Category Cashflow Comparison */}
-        <div className="xl:col-span-2 p-6 rounded-md bg-white dark:bg-[#0e1626] border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-emerald-600" />
-                Category Cashflow Breakdown (Recharts)
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Direct comparison of incoming vs outgoing capital across spending sectors
-              </p>
-            </div>
+      {/* RECHARTS ANIMATED VISUALIZATIONS (Area Chart & Pie Chart) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        {/* Area Chart: Cashflow Velocity Timeline */}
+        <div className="lg:col-span-2 p-4 sm:p-6 rounded-md bg-white dark:bg-[#0e1626] border border-slate-200 dark:border-slate-800 shadow-sm space-y-3 sm:space-y-4">
+          <div className="space-y-1">
+            <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <Activity className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Cashflow Velocity Timeline (Area Chart)</span>
+            </h3>
+            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
+              Cumulative chronological comparison of incoming capital vs expenditures
+            </p>
           </div>
 
-          <div className="h-80 w-full pt-4">
-            {categoryData.length > 0 ? (
+          <div className="h-64 sm:h-80 w-full pt-2">
+            {timelineData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={categoryData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                <AreaChart data={timelineData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="incomeArea" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.35} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
+                    </linearGradient>
+                    <linearGradient id="expenseArea" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.35} />
+                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#888888' }} />
-                  <YAxis tick={{ fontSize: 12, fill: '#888888' }} />
+                  <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#888888', fontFamily: 'Inter' }} />
+                  <YAxis tick={{ fontSize: 11, fill: '#888888', fontFamily: 'Inter' }} />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: '#0f172a',
@@ -234,43 +194,61 @@ const Analytics = ({ allTransaction = [] }) => {
                       borderRadius: '6px',
                       color: '#ffffff',
                       fontSize: '12px',
+                      fontFamily: 'Inter',
                     }}
+                    formatter={(val) => `₹${Number(val).toLocaleString('en-IN')}`}
                   />
-                  <Legend />
-                  <Bar dataKey="Income" fill="#10b981" radius={[4, 4, 0, 0]} animationDuration={1200} />
-                  <Bar dataKey="Expense" fill="#ef4444" radius={[4, 4, 0, 0]} animationDuration={1200} />
-                </BarChart>
+                  <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '8px', fontFamily: 'Inter' }} />
+                  <Area
+                    type="monotone"
+                    dataKey="Income"
+                    stroke="#10b981"
+                    strokeWidth={2.5}
+                    fillOpacity={1}
+                    fill="url(#incomeArea)"
+                    animationDuration={1200}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="Expense"
+                    stroke="#ef4444"
+                    strokeWidth={2.5}
+                    fillOpacity={1}
+                    fill="url(#expenseArea)"
+                    animationDuration={1200}
+                  />
+                </AreaChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-full flex items-center justify-center text-slate-400 text-xs italic">
-                No categorical entries found for the selected timeline.
+              <div className="h-full flex items-center justify-center text-slate-400 text-xs italic font-sans">
+                No chronological transactions recorded for this period.
               </div>
             )}
           </div>
         </div>
 
         {/* Pie Chart: Expense Distribution */}
-        <div className="p-6 rounded-md bg-white dark:bg-[#0e1626] border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div className="p-4 sm:p-6 rounded-md bg-white dark:bg-[#0e1626] border border-slate-200 dark:border-slate-800 shadow-sm space-y-3 sm:space-y-4">
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <PieChartIcon className="w-4 h-4 text-emerald-600" />
-              Expense Distribution
+            <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <PieChartIcon className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Expense Distribution (Pie Chart)</span>
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
               Percentage allocation by cost category
             </p>
           </div>
 
-          <div className="h-80 w-full flex items-center justify-center">
+          <div className="h-64 sm:h-80 w-full flex items-center justify-center">
             {expensePieData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={expensePieData}
                     cx="50%"
-                    cy="50%"
-                    innerRadius={55}
-                    outerRadius={85}
+                    cy="45%"
+                    innerRadius={45}
+                    outerRadius={75}
                     paddingAngle={3}
                     dataKey="value"
                     animationDuration={1200}
@@ -280,20 +258,21 @@ const Analytics = ({ allTransaction = [] }) => {
                     ))}
                   </Pie>
                   <Tooltip
-                    formatter={(val) => `$${Number(val).toLocaleString()}`}
+                    formatter={(val) => `₹${Number(val).toLocaleString('en-IN')}`}
                     contentStyle={{
                       backgroundColor: '#0f172a',
                       borderColor: '#334155',
                       borderRadius: '6px',
                       color: '#ffffff',
                       fontSize: '12px',
+                      fontFamily: 'Inter',
                     }}
                   />
-                  <Legend layout="horizontal" verticalAlign="bottom" align="center" wrapperStyle={{ fontSize: '11px' }} />
+                  <Legend layout="horizontal" verticalAlign="bottom" align="center" wrapperStyle={{ fontSize: '11px', paddingTop: '4px', fontFamily: 'Inter' }} />
                 </PieChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-full flex items-center justify-center text-slate-400 text-xs italic">
+              <div className="h-full flex items-center justify-center text-slate-400 text-xs italic font-sans">
                 No expense entries to chart.
               </div>
             )}
